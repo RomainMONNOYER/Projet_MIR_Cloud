@@ -6,7 +6,7 @@ version: "3.1"
 services:
 
   django:
-    build: .
+    build: ..
     container_name: ${PROJECT_NAME}-django
     restart: unless-stopped
     command: bash -c "
