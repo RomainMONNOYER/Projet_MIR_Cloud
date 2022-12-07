@@ -32,7 +32,7 @@ jobs:
             type=raw,value=latest
       # Push to your docker hub account
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v3 
         with:
           context: .
           push: true
