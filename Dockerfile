@@ -6,7 +6,7 @@ EXPOSE 8000
 
 COPY ./app /app
 WORKDIR /app
-COPY ./docker-dev/requirements.txt /tmp
+COPY ./docker-dev/requirements.txt /tmp/
 RUN apt-get update && apt-get upgrade -y
 RUN  pip install --upgrade pip
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
