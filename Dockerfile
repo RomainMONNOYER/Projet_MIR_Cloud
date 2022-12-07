@@ -13,6 +13,6 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 RUN python3 manage.py makemigrations && python3 manage.py migrate
 
 
-#CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
+CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
 #Todo Fix number of worker to (2 x $num_cores) + 1 create a config file
-CMD [ "gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3","Projet_MIR_Cloud.wsgi:application"]
+#CMD [ "gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2","Projet_MIR_Cloud.wsgi:application"]
