@@ -45,4 +45,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: docker run -d -p 8069:8000 --name project-mir-cloud --restart unless-stopped ${{ secrets.DOCKER_USERNAME }}/projet-mir-cloud:latest
+          script: docker run -d -p 8069:8000 --name project-mir-cloud --rm ${{ secrets.DOCKER_USERNAME }}/projet-mir-cloud:latest
