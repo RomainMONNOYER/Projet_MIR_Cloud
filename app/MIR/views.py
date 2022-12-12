@@ -36,7 +36,6 @@ def image_upload_view(request):
 def image_search(request, pk):
     image = ImageRequests.objects.filter(id = pk).first()
     if request.method == 'POST':
-        print("POST")
         form = SearchForm(request.POST)
         extractReqFeatures(image.image.url)
         if form.is_valid():
