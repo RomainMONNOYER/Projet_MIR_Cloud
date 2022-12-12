@@ -7,6 +7,7 @@ EXPOSE 8000
 
 COPY requirements.txt /tmp/app/
 RUN apt-get update && apt-get upgrade -y
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN  pip install --upgrade pip
 RUN pip install --no-cache-dir -r /tmp/app/requirements.txt
 

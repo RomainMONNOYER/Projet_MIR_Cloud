@@ -8,6 +8,7 @@ COPY ./app /app
 WORKDIR /app
 COPY ./docker-dev/requirements.txt /tmp
 RUN apt-get update && apt-get upgrade -y
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN  pip install --upgrade pip
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 RUN python3 manage.py makemigrations && python3 manage.py migrate
