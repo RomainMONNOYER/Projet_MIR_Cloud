@@ -140,6 +140,12 @@ def extractReqFeatures(fileName,algo_choice):
         glcmProperties5 = greycoprops(glcmMatrix,'correlation').ravel()
         glcmProperties6 = greycoprops(glcmMatrix,'ASM').ravel()
         vect_features = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
+
+        GLCM_path = os.path.join(settings.MEDIA_ROOT, 'GLCM', 'data.txt')
+        print(GLCM_path)
+        with open(GLCM_path, 'r') as r:
+            json_data = json.load(r)
+        return vect_features, json_data
     elif algo_choice.LBP: #lbp
         points=8
         radius=1
