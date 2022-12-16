@@ -1,5 +1,5 @@
 from django import forms
-from .models import ImageRequests
+from .models import ImageRequests, DescriptorRequests
 
 
 class ImageForm(forms.ModelForm):
@@ -8,10 +8,7 @@ class ImageForm(forms.ModelForm):
         model = ImageRequests
         fields = ('title', 'image')
 
-class SearchForm(forms.Form):
-    sift = forms.BooleanField()
-    orb = forms.BooleanField()
-    HSV = forms.BooleanField()
+class SearchForm(forms.ModelForm):
     class Meta:
-        model = ImageRequests
-        fields = ('sift', 'orb', 'HSV')
+        model = DescriptorRequests
+        fields = ('BGR', 'HSV', 'SIFT', 'ORB','GLCM', 'LBP', 'HOG','VGG16', 'distance', 'top')

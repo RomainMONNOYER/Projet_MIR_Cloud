@@ -4,7 +4,7 @@
 *.pyc
 __pycache__
 app/db.sqlite3
-media
+
 
 # Backup files #
 *.bak
@@ -139,3 +139,5 @@ GitHub.sublime-settings
 /Projet_MIR_Cloud.iml
 /app/MIR/migrations/
 /virtualenvMIR/
+
+#media
