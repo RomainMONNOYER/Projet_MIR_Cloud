@@ -154,9 +154,13 @@ def extractReqFeatures(fileName,algo_choice):
                 subVector =fullLBPmatrix[k*subSize[0]:(k+1)*subSize[0],j*subSize[1]:(j+1)*subSize[1]].ravel()
                 subHist,edges =np.histogram(subVector,bins=int(2**points),range=(0,2**points))
                 histograms = np.concatenate((histograms,subHist),axis=None)
-        LBP_path = os.path.join(settings.MEDIA_ROOT, 'LBP', 'data.txt')
+        LBP_path = os.path.join(settings.MEDIA_ROOT, 'LBP', 'data1.txt')
         with open(LBP_path, 'r') as r:
             json_data = json.load(r)
+        LBP_path = os.path.join(settings.MEDIA_ROOT, 'LBP', 'data2.txt')
+        with open(LBP_path, 'r') as r:
+            json_data2 = json.load(r)
+        json_data.update(json_data2)
         return histograms, json_data
 
     elif algo_choice.HOG: #hog
@@ -180,10 +184,15 @@ def extractReqFeatures(fileName,algo_choice):
         feature = model.predict(image) # predict the probability
         vect_features = np.array(feature[0])
 
-        VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data.txt')
+        VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data1.txt')
         print(VGG16_path)
         with open(VGG16_path, 'r') as r:
             json_data = json.load(r)
+        VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data2.txt')
+        print(VGG16_path)
+        with open(VGG16_path, 'r') as r:
+            json_data1 = json.load(r)
+        json_data.update(json_data1)
         return vect_features, json_data
 
         # np.savetxt(f"Methode_{str(algo_choice)}_requete.txt", vect_features)
