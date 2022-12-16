@@ -7,3 +7,10 @@
         <button type="submit">search</button>
     </form>
 {% endif %}
+
+{% if voisins %}
+    {% for voisin in voisins%}
+        <img src="{{ voisin }}" alt="connect" style="max-height:300px">
+    {% endfor %}
+
+{% endif %}

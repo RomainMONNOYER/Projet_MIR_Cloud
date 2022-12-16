@@ -1,9 +1,12 @@
+import os.path
+
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from .forms import ImageForm, SearchForm
 from .models import ImageRequests
-from .utils import extractReqFeatures
+from .utils import extractReqFeatures, getkVoisins
 
 
 def index(request, *args, **kwargs):
@@ -19,12 +22,10 @@ def index(request, *args, **kwargs):
 def image_upload_view(request):
     """Process images uploaded by users"""
     if request.method == 'POST':
-        print(f"Post request datas: {request.POST}")
-        print(f"Request: {request}")
+
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            print(f"Form instance: {form.instance.id}")
             # Get the current instance object to display in the template
             img_obj = form.instance
             return redirect(f"/MIR/search/{img_obj.id}")
@@ -37,9 +38,14 @@ def image_search(request, pk):
     image = ImageRequests.objects.filter(id = pk).first()
     if request.method == 'POST':
         form = SearchForm(request.POST)
-        extractReqFeatures(image.image.url)
         if form.is_valid():
-            return render(request, 'search.html', {'pk': image.image, 'form': form})
+            form.save()
+            vec, json_data = extractReqFeatures(image.image.url, algo_choice=form.instance)
+            tmp = getkVoisins(json_data, vec, form.instance.top)
+            voisins = [os.path.join(settings.MEDIA_URL, json_data[str(tmp[i][0])][0]) for i in range(len(tmp))]
+            print(voisins)
+            return render(request, 'search.html', {'pk': image.image, 'form': form, 'voisins':voisins})
+
     else:
         form = SearchForm()
     return render(request, 'search.html', {'pk': image.image, 'form': form})
