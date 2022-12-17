@@ -6,17 +6,8 @@ import cv2
 import numpy as np
 from django.conf import settings
 from skimage.transform import resize
-from skimage.feature import hog
-from skimage import exposure
 from skimage import io, color, img_as_ubyte
-from matplotlib import pyplot as plt
 from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
-
-from tensorflow import keras
-from keras.applications import vgg16
-import tensorflow as tf
-from keras.applications.vgg16 import preprocess_input
-
 # def generateHistogramme_HSV(filenames, progressBar):
 #     if not os.path.isdir("HSV"):
 #         os.mkdir("HSV")
@@ -179,27 +170,27 @@ def extractReqFeatures(fileName,algo_choice):
         image = cv2.resize(image,winSize)
         hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
         vect_features = hog.compute(image)
-    elif algo_choice.VGG16:
-        model=settings.VGG16
-        print(fileName)
-        image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
-        image = tf.keras.utils.img_to_array(image)
-        # reshape data for the model
-        image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-        image = preprocess_input(image)
-        feature = model.predict(image) # predict the probability
-        vect_features = np.array(feature[0])
-
-        VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data1.txt')
-        print(VGG16_path)
-        with open(VGG16_path, 'r') as r:
-            json_data = json.load(r)
-        VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data2.txt')
-        print(VGG16_path)
-        with open(VGG16_path, 'r') as r:
-            json_data1 = json.load(r)
-        json_data.update(json_data1)
-        return vect_features, json_data
+    # elif algo_choice.VGG16:
+    #     model=settings.VGG16
+    #     print(fileName)
+    #     image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    #     image = tf.keras.utils.img_to_array(image)
+    #     # reshape data for the model
+    #     image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    #     image = preprocess_input(image)
+    #     feature = model.predict(image) # predict the probability
+    #     vect_features = np.array(feature[0])
+    #
+    #     VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data1.txt')
+    #     print(VGG16_path)
+    #     with open(VGG16_path, 'r') as r:
+    #         json_data = json.load(r)
+    #     VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data2.txt')
+    #     print(VGG16_path)
+    #     with open(VGG16_path, 'r') as r:
+    #         json_data1 = json.load(r)
+    #     json_data.update(json_data1)
+    #     return vect_features, json_data
 
         # np.savetxt(f"Methode_{str(algo_choice)}_requete.txt", vect_features)
     # # print(vect_features)
