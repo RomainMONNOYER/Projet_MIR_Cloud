@@ -88,10 +88,11 @@ def extractReqFeatures(fileName,algo_choice):
         histR = cv2.calcHist([img],[2],None,[256],[0,256])
         vect_features = np.concatenate((histB, np.concatenate((histG,histR),axis=None)),axis=None)
 
-        BGR_path = os.path.join(settings.MEDIA_ROOT, 'BGR', 'data.txt')
-        with open(BGR_path, 'r') as r:
-            json_data = json.load(r)
-        return vect_features, json_data
+        # BGR_path = os.path.join(settings.MEDIA_ROOT, 'BGR', 'data.txt')
+        # with open(BGR_path, 'r') as r:
+        #     json_data = json.load(r)
+        # return vect_features, json_data
+        return vect_features, 'BGR'
 
     elif algo_choice.HSV: # Histo HSV
         hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
@@ -215,6 +216,21 @@ def getkVoisins(lfeatures, vec_descriptor, top) :
     for k in lfeatures.keys():
         dist = euclidianDistance(vec_descriptor, lfeatures[k][1])
         ldistances.append((k, lfeatures[k], dist))
+    ldistances.sort(key=operator.itemgetter(2))
+    lvoisins = []
+    for i in range(top):
+        lvoisins.append(ldistances[i])
+    return lvoisins
+
+def getkVoisins2_files(vec_descriptor, top, descriptor_folder) :
+    ldistances = []
+    for path, subdir, files in os.walk(os.path.join(settings.MEDIA_ROOT,descriptor_folder)):
+        for f in files:
+            p = os.path.join(path, f)
+            des = np.loadtxt(p)
+            dist = euclidianDistance(vec_descriptor, des)
+            name = os.path.splitext(f)[0]
+            ldistances.append((name.split('_')[4], os.path.join(settings.MEDIA_URL,settings.MIR_DATABASE ,*p.split(os.sep)[4:6] , name+'.jpg'), dist))
     ldistances.sort(key=operator.itemgetter(2))
     lvoisins = []
     for i in range(top):

@@ -136,6 +136,7 @@ MEDIA_URL = '/media/'
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+MIR_DATABASE= 'MIR_DATASETS_B'
 
 # from keras.applications import vgg16
 # VGG16 = vgg16.VGG16(
