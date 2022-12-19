@@ -15,5 +15,5 @@ RUN python3 manage.py makemigrations && python3 manage.py migrate
 
 
 #CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
-#Todo Fix number of worker to (2 x $num_cores) + 1 create a config file
+#Todo Fix number of worker to (2 x $num_cores) + 1 create a config file after
 CMD [ "gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2","Projet_MIR_Cloud.wsgi:application"]
