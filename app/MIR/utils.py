@@ -4,9 +4,7 @@ import operator
 import os
 import cv2
 import numpy as np
-import tf as tf
 from django.conf import settings
-from keras.applications.vgg16 import preprocess_input
 from skimage.transform import resize
 from skimage import io, color, img_as_ubyte
 from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
@@ -179,16 +177,16 @@ def extractReqFeatures(fileName,algo_choice):
         image = cv2.resize(image,winSize)
         hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
         vect_features = hog.compute(image)
-    elif algo_choice.VGG16:
-        model=settings.VGG16
-        print(fileName)
-        image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
-        image = tf.keras.utils.img_to_array(image)
-        # reshape data for the model
-        image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-        image = preprocess_input(image)
-        feature = model.predict(image) # predict the probability
-        vect_features = np.array(feature[0])
+    # elif algo_choice.VGG16:
+    #     model=settings.VGG16
+    #     print(fileName)
+    #     image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    #     image = tf.keras.utils.img_to_array(image)
+    #     # reshape data for the model
+    #     image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    #     image = preprocess_input(image)
+    #     feature = model.predict(image) # predict the probability
+    #     vect_features = np.array(feature[0])
     #
     #     VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data1.txt')
     #     print(VGG16_path)
@@ -199,8 +197,8 @@ def extractReqFeatures(fileName,algo_choice):
     #     with open(VGG16_path, 'r') as r:
     #         json_data1 = json.load(r)
     #     json_data.update(json_data1)
-        json_data={}
-        return vect_features, json_data
+    #     json_data={}
+    #     return vect_features, json_data
 
         # np.savetxt(f"Methode_{str(algo_choice)}_requete.txt", vect_features)
     # # print(vect_features)
