@@ -4,7 +4,9 @@ import operator
 import os
 import cv2
 import numpy as np
+import tf as tf
 from django.conf import settings
+from keras.applications.vgg16 import preprocess_input
 from skimage.transform import resize
 from skimage import io, color, img_as_ubyte
 from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
@@ -81,21 +83,19 @@ from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
 def extractReqFeatures(fileName,algo_choice):
     img = cv2.imread(f'/app{fileName}')
     resized_img = resize(img, (128*4, 64*4))
+    print(algo_choice)
     if algo_choice.BGR: #Histo Couleurs
-        print(algo_choice)
         histB = cv2.calcHist([img],[0],None,[256],[0,256])
         histG = cv2.calcHist([img],[1],None,[256],[0,256])
         histR = cv2.calcHist([img],[2],None,[256],[0,256])
         vect_features = np.concatenate((histB, np.concatenate((histG,histR),axis=None)),axis=None)
 
         BGR_path = os.path.join(settings.MEDIA_ROOT, 'BGR', 'data.txt')
-        print(BGR_path)
         with open(BGR_path, 'r') as r:
             json_data = json.load(r)
         return vect_features, json_data
 
     elif algo_choice.HSV: # Histo HSV
-        print(algo_choice)
         hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
         histH = cv2.calcHist([hsv],[0],None,[256],[0,256])
         histS = cv2.calcHist([hsv],[1],None,[256],[0,256])
@@ -103,20 +103,30 @@ def extractReqFeatures(fileName,algo_choice):
         vect_features = np.concatenate((histH, np.concatenate((histS,histV),axis=None)),axis=None)
 
         HSV_path = os.path.join(settings.MEDIA_ROOT, 'HSV', 'data.txt')
-        print(HSV_path)
         with open(HSV_path, 'r') as r:
             json_data = json.load(r)
         return vect_features, json_data
 
     elif algo_choice.SIFT: #SIFT
-        print(algo_choice)
         sift = cv2.SIFT_create()
         kps , vect_features = sift.detectAndCompute(img,None)
 
     elif algo_choice.ORB: #ORB
-        print(algo_choice)
+
         orb = cv2.ORB_create()
         key_point1,vect_features = orb.detectAndCompute(img,None)
+        for path, subdirs, files in os.walk(f"{settings.MEDIA_ROOT}ORB"):
+            print(path, subdirs, files)
+            for name in files:
+                tmp=os.path.join(path, name)
+                print(tmp)
+                print(np.loadtxt(tmp), f"{settings.MEDIA_URL}ORB/{name}")
+                print(os.path.join(settings.MEDIA_URL, f"ORB/{name}"))
+        return vect_features, {}
+        # ORB_path = os.path.join(settings.MEDIA_ROOT, 'ORB', 'data.txt')
+        # with open(ORB_path, 'r') as r:
+        #     json_data = json.load(r)
+        # return vect_features, json_data
     elif algo_choice.GLCM: #glcm
         distances=[1,-1]
         angles=[0, np.pi/4, np.pi/2, 3*np.pi/4]
@@ -133,7 +143,6 @@ def extractReqFeatures(fileName,algo_choice):
         vect_features = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
 
         GLCM_path = os.path.join(settings.MEDIA_ROOT, 'GLCM', 'data.txt')
-        print(GLCM_path)
         with open(GLCM_path, 'r') as r:
             json_data = json.load(r)
         return vect_features, json_data
@@ -170,16 +179,16 @@ def extractReqFeatures(fileName,algo_choice):
         image = cv2.resize(image,winSize)
         hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
         vect_features = hog.compute(image)
-    # elif algo_choice.VGG16:
-    #     model=settings.VGG16
-    #     print(fileName)
-    #     image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
-    #     image = tf.keras.utils.img_to_array(image)
-    #     # reshape data for the model
-    #     image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-    #     image = preprocess_input(image)
-    #     feature = model.predict(image) # predict the probability
-    #     vect_features = np.array(feature[0])
+    elif algo_choice.VGG16:
+        model=settings.VGG16
+        print(fileName)
+        image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+        image = tf.keras.utils.img_to_array(image)
+        # reshape data for the model
+        image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+        image = preprocess_input(image)
+        feature = model.predict(image) # predict the probability
+        vect_features = np.array(feature[0])
     #
     #     VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data1.txt')
     #     print(VGG16_path)
@@ -190,7 +199,8 @@ def extractReqFeatures(fileName,algo_choice):
     #     with open(VGG16_path, 'r') as r:
     #         json_data1 = json.load(r)
     #     json_data.update(json_data1)
-    #     return vect_features, json_data
+        json_data={}
+        return vect_features, json_data
 
         # np.savetxt(f"Methode_{str(algo_choice)}_requete.txt", vect_features)
     # # print(vect_features)
