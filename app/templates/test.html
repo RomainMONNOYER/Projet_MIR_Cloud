@@ -1,25 +1,17 @@
 <html>
-<head>
-    <title>Sélecteur de distance</title>
-</head>
+{% include "header.html" %}
 <body>
-<form action="process.py" method="post">
-    <label for="sift">SIFT</label>
-    <input type="radio" id="sift" name="selecteur" value="sift">
-    <label for="orb">ORB</label>
-    <input type="radio" id="orb" name="selecteur" value="orb">
-    <label for="glcm">GLCM</label>
-    <input type="radio" id="glcm" name="selecteur" value="glcm">
-    <label for="imagenet">Imagenet</label>
-    <input type="radio" id="imagenet" name="selecteur" value="imagenet">
-
-    <label for="distance">Distance:</label>
-    <select id="distance" name="distance">
-        <option value="euclidean">Euclidean</option>
-        <option value="baccharia">Baccharia</option>
-    </select>
-
-    <input type="submit" value="Envoyer la requete">
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            WYNAUT
+        </div>
+        <div class="col-6">
+            WYNAUT
+        </div>
+    </div>
+</div>
 </body>
 </html>
+
+
