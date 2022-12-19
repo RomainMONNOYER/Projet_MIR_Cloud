@@ -30,7 +30,6 @@ SECRET_KEY = 'django-insecure-blpo_nijwq-cg$7)9v92%)_br#@+_&bb79up42%=k-2ukb%_z)
 # DEBUG = env.bool('DEBUG_MODE')
 DEBUG = True
 
-
 # ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 ALLOWED_HOSTS = ['*']
 # Application definition
@@ -76,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Projet_MIR_Cloud.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -86,7 +84,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -106,7 +103,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -118,7 +114,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -129,21 +124,24 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 # Base url to serve media files
 MEDIA_URL = '/media/'
 
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+MIR_DATABASE = 'MIR_DATASETS_B'
 
-# from keras.applications import vgg16
-# VGG16 = vgg16.VGG16(
-#     include_top=True,
-#     weights='imagenet',
-#     input_tensor=None,
-#     input_shape=None,
-#     pooling=None,
-#     classes=1000,
-#     classifier_activation='softmax'
-# )
+
+
+from keras.applications import vgg16
+
+VGG16 = vgg16.VGG16(
+    include_top=True,
+    weights='imagenet',
+    input_tensor=None,
+    input_shape=None,
+    pooling=None,
+    classes=1000,
+    classifier_activation='softmax'
+)

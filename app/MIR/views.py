@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .forms import ImageForm, SearchForm
 from .models import ImageRequests
-from .utils import extractReqFeatures, getkVoisins
+from .utils import extractReqFeatures, getkVoisins, getkVoisins2_files
 
 
 def index(request, *args, **kwargs):
@@ -41,9 +41,9 @@ def image_search(request, pk):
         if form.is_valid():
             form.save()
             vec, json_data = extractReqFeatures(image.image.url, algo_choice=form.instance)
-            tmp = getkVoisins(json_data, vec, form.instance.top)
-            voisins = [os.path.join(settings.MEDIA_URL, json_data[str(tmp[i][0])][0]) for i in range(len(tmp))]
-            print(voisins)
+            tmp = getkVoisins2_files(vec, form.instance.top, json_data)
+            voisins = [tmp[i][1] for i in range(len(tmp))]
+            print(tmp)
             return render(request, 'search.html', {'pk': image.image, 'form': form, 'voisins':voisins})
 
     else:
