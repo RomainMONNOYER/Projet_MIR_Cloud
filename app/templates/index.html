@@ -1,6 +1,6 @@
 <html>
 {% include "header.html" %}
-
+<body>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
@@ -11,6 +11,6 @@
     <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
     <h1>{{ img_obj.image.url }}</h1>
 {% endif %}
-
+</body>
 </html>
 

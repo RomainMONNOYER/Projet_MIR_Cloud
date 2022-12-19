@@ -1,3 +1,6 @@
+<html>
+{% include "header.html" %}
+<body>
 {% if pk %}
     <img src="{{ pk.url}}" alt="connect" style="max-height:300px">
     <h1>Class : {{ class }}</h1>
@@ -28,3 +31,5 @@
         <a href=""><img src="{{ voisin }}" alt="{{ voisin }}" style="min-height: 300px; max-height: 300px"></a>
     {% endfor %}
 {% endif %}
+</body>
+</html>
