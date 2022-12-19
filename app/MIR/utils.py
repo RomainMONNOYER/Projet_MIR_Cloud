@@ -101,10 +101,11 @@ def extractReqFeatures(fileName,algo_choice):
         histV = cv2.calcHist([hsv],[2],None,[256],[0,256])
         vect_features = np.concatenate((histH, np.concatenate((histS,histV),axis=None)),axis=None)
 
-        HSV_path = os.path.join(settings.MEDIA_ROOT, 'HSV', 'data.txt')
-        with open(HSV_path, 'r') as r:
-            json_data = json.load(r)
-        return vect_features, json_data
+        # HSV_path = os.path.join(settings.MEDIA_ROOT, 'HSV', 'data.txt')
+        # with open(HSV_path, 'r') as r:
+        #     json_data = json.load(r)
+        # return vect_features, json_data
+        return vect_features, "HSV"
 
     elif algo_choice.SIFT: #SIFT
         sift = cv2.SIFT_create()
@@ -141,10 +142,12 @@ def extractReqFeatures(fileName,algo_choice):
         glcmProperties6 = greycoprops(glcmMatrix,'ASM').ravel()
         vect_features = np.array([glcmProperties1,glcmProperties2,glcmProperties3,glcmProperties4,glcmProperties5,glcmProperties6]).ravel()
 
-        GLCM_path = os.path.join(settings.MEDIA_ROOT, 'GLCM', 'data.txt')
-        with open(GLCM_path, 'r') as r:
-            json_data = json.load(r)
-        return vect_features, json_data
+        # GLCM_path = os.path.join(settings.MEDIA_ROOT, 'GLCM', 'data.txt')
+        # with open(GLCM_path, 'r') as r:
+        #     json_data = json.load(r)
+        # return vect_features, json_data
+
+        return vect_features, "GLCM"
     elif algo_choice.LBP: #lbp
         points=8
         radius=1
@@ -159,14 +162,15 @@ def extractReqFeatures(fileName,algo_choice):
                 subVector =fullLBPmatrix[k*subSize[0]:(k+1)*subSize[0],j*subSize[1]:(j+1)*subSize[1]].ravel()
                 subHist,edges =np.histogram(subVector,bins=int(2**points),range=(0,2**points))
                 histograms = np.concatenate((histograms,subHist),axis=None)
-        LBP_path = os.path.join(settings.MEDIA_ROOT, 'LBP', 'data1.txt')
-        with open(LBP_path, 'r') as r:
-            json_data = json.load(r)
-        LBP_path = os.path.join(settings.MEDIA_ROOT, 'LBP', 'data2.txt')
-        with open(LBP_path, 'r') as r:
-            json_data2 = json.load(r)
-        json_data.update(json_data2)
-        return histograms, json_data
+        # LBP_path = os.path.join(settings.MEDIA_ROOT, 'LBP', 'data1.txt')
+        # with open(LBP_path, 'r') as r:
+        #     json_data = json.load(r)
+        # LBP_path = os.path.join(settings.MEDIA_ROOT, 'LBP', 'data2.txt')
+        # with open(LBP_path, 'r') as r:
+        #     json_data2 = json.load(r)
+        # json_data.update(json_data2)
+        # return histograms, json_data
+        return histograms, "LBP"
 
     elif algo_choice.HOG: #hog
         cellSize = (25,25)
