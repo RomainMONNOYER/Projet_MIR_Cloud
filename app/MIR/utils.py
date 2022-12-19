@@ -8,6 +8,13 @@ from django.conf import settings
 from skimage.transform import resize
 from skimage import io, color, img_as_ubyte
 from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
+
+import tensorflow as tf
+from tensorflow.keras.utils import load_img
+from tensorflow.keras.utils import img_to_array
+from keras.applications.vgg16 import preprocess_input
+from keras.applications.vgg16 import decode_predictions
+from keras.applications import vgg16
 # def generateHistogramme_HSV(filenames, progressBar):
 #     if not os.path.isdir("HSV"):
 #         os.mkdir("HSV")
@@ -112,6 +119,7 @@ def extractReqFeatures(fileName,algo_choice):
         kps , vect_features = sift.detectAndCompute(img,None)
 
     elif algo_choice.ORB: #ORB
+        ## TODO: oiseaux/bulbul/2_5_oiseaux_bulbul_2550.jpg has size (499,32) instead of (500,32) fix it ? (get deleted from DB)
 
         orb = cv2.ORB_create()
         key_point1,vect_features = orb.detectAndCompute(img,None)
@@ -122,7 +130,7 @@ def extractReqFeatures(fileName,algo_choice):
                 print(tmp)
                 print(np.loadtxt(tmp), f"{settings.MEDIA_URL}ORB/{name}")
                 print(os.path.join(settings.MEDIA_URL, f"ORB/{name}"))
-        return vect_features, {}
+        return vect_features, "ORB"
         # ORB_path = os.path.join(settings.MEDIA_ROOT, 'ORB', 'data.txt')
         # with open(ORB_path, 'r') as r:
         #     json_data = json.load(r)
@@ -182,16 +190,18 @@ def extractReqFeatures(fileName,algo_choice):
         image = cv2.resize(image,winSize)
         hog = cv2.HOGDescriptor(winSize,blockSize,blockStride,cellSize,nBins)
         vect_features = hog.compute(image)
-    # elif algo_choice.VGG16:
-    #     model=settings.VGG16
-    #     print(fileName)
-    #     image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
-    #     image = tf.keras.utils.img_to_array(image)
-    #     # reshape data for the model
-    #     image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
-    #     image = preprocess_input(image)
-    #     feature = model.predict(image) # predict the probability
-    #     vect_features = np.array(feature[0])
+        return vect_features, "HOG"
+    elif algo_choice.VGG16:
+        model=settings.VGG16
+        print(fileName)
+        image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+        image = tf.keras.utils.img_to_array(image)
+        # reshape data for the model
+        image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+        image = preprocess_input(image)
+        feature = model.predict(image) # predict the probability
+        vect_features = np.array(feature[0])
+        return vect_features, "VGG16"
     #
     #     VGG16_path = os.path.join(settings.MEDIA_ROOT, 'VGG16', 'data1.txt')
     #     print(VGG16_path)
@@ -232,7 +242,11 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder) :
         for f in files:
             p = os.path.join(path, f)
             des = np.loadtxt(p)
+            # print(f"path: {p}")
+            # print(f"Image descriptor: {vec_descriptor.shape}")
+            # print(f"Search descriptor: {des.shape}")
             dist = euclidianDistance(vec_descriptor, des)
+            # dist = euclidianDistance(vec_descriptor, des)
             name = os.path.splitext(f)[0]
             ldistances.append((name.split('_')[4], os.path.join(settings.MEDIA_URL,settings.MIR_DATABASE ,*p.split(os.sep)[4:6] , name+'.jpg'), dist))
     ldistances.sort(key=operator.itemgetter(2))
@@ -240,3 +254,14 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder) :
     for i in range(top):
         lvoisins.append(ldistances[i])
     return lvoisins
+
+def flann(a,b):
+    a = np.float32(np.array(a))
+    b = np.float32(np.array(b))
+    if a.shape[0]==0 or b.shape[0]==0:
+        return np.inf
+    index_params = dict(algorithm=1, trees=5)
+    sch_params = dict(checks=50)
+    flannMatcher = cv2.FlannBasedMatcher(index_params, sch_params)
+    matches = list(map(lambda x: x.distance, flannMatcher.match(a, b)))
+    return np.mean(matches)

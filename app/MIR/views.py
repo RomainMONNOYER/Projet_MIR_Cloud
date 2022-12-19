@@ -42,10 +42,8 @@ def image_search(request, pk):
             form.save()
             vec, json_data = extractReqFeatures(image.image.url, algo_choice=form.instance)
             tmp = getkVoisins2_files(vec, form.instance.top, json_data)
-            print(tmp)
             voisins = [tmp[i][1] for i in range(len(tmp))]
-            # voisins = [os.path.join(settings.MEDIA_URL, json_data[str(tmp[i][0])][0]) for i in range(len(tmp))]
-            print(voisins)
+            print(tmp)
             return render(request, 'search.html', {'pk': image.image, 'form': form, 'voisins':voisins})
 
     else:
