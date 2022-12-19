@@ -28,7 +28,7 @@ def image_upload_view(request):
             form.save()
             # Get the current instance object to display in the template
             img_obj = form.instance
-            return redirect(f"/MIR/search/{img_obj.id}")
+            return redirect(f"/search/{img_obj.id}")
 
     else:
         form = ImageForm()
