@@ -11,12 +11,12 @@ class ImageRequests(models.Model):
         POISSON = 3
         SINGE = 4
     class SubClassChoices(models.IntegerChoices):
-        # BARN_SPIDER = 0
-        # WOLF_SPIDER = 1
-        # TRAP_DOOR_SPIDER = 2
-        # ORB_WEAVING_SPIDER = 3
-        # GARDEN_SPIDER = 4
-        # TARANTULA = 5
+    #     # BARN_SPIDER = 0
+    #     # WOLF_SPIDER = 1
+    #     # TRAP_DOOR_SPIDER = 2
+    #     # ORB_WEAVING_SPIDER = 3
+    #     # GARDEN_SPIDER = 4
+    #     # TARANTULA = 5
         SIBERIAN_HUSKY= 0
         LABRADOR_RETRIEVER = 1
         BOXER = 2

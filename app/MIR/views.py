@@ -43,23 +43,37 @@ def image_search(request, pk):
         if form.is_valid():
             form.save()
             start = time.time()
-            vec, json_data = extractReqFeatures(image.image.url, algo_choice=form.instance)
-            tmp = getkVoisins2_files(vec, form.instance.top, json_data, form.instance.distance)
+            vec, descriptor = extractReqFeatures(image.image.url, algo_choice=form.instance)
+            tmp = getkVoisins2_files(vec, form.instance.top, descriptor, form.instance.distance)
             end = time.time()
             voisins = [tmp[i][1] for i in range(len(tmp))]
             noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
             noms_voisins2 = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[1]) for voisin in voisins]
-            Compute_RP(form.instance.top, image.classification, noms_voisins)
+            graph1,mean_r, mean_p = Compute_RP(form.instance.top,
+                                image.classification,
+                                noms_voisins,
+                                descriptor,
+                                form.instance.distance)
+            graph2,_,_ =Compute_RP(form.instance.top,
+                       image.subclassification,
+                       noms_voisins2,
+                       descriptor,
+                       form.instance.distance)
+            graph3,_,_ = Compute_RP(form.instance.top,
+                                  image.subclassification,
+                                  noms_voisins2,
+                                  descriptor,
+                                  form.instance.distance,
+                                  rp_process = 'Mrp')
             return render(request, 'search.html', {'pk': image.image,
                                                    'form': form,
                                                    'voisins':voisins,
                                                    'time': round(end-start,2),
-                                                   'graph': Compute_RP(form.instance.top,
-                                                                       image.classification,
-                                                                       noms_voisins),
-                                                   'graph2':Compute_RP(form.instance.top,
-                                                                       image.subclassification,
-                                                                       noms_voisins2)})
+                                                   'MeanR':mean_r,
+                                                   'MeanP':mean_p,
+                                                   'graph': graph1,
+                                                   'graph2':graph2,
+                                                   'graph3':graph3})
     else:
         form = SearchForm()
     return render(request, 'search.html', {'pk': image.image, 'form': form})
@@ -69,16 +83,12 @@ import matplotlib.pyplot as plt
 from io import StringIO
 
 def return_graph():
-
     x = np.arange(0,np.pi*3,.1)
     y = np.sin(x)
-
     fig = plt.figure()
     plt.plot(x,y)
-
     imgdata = StringIO()
     fig.savefig(imgdata, format='svg')
     imgdata.seek(0)
-
     data = imgdata.getvalue()
     return data

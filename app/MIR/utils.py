@@ -115,7 +115,8 @@ def extractReqFeatures(fileName, algo_choice):
         return HSV(img), "HSV"
     elif algo_choice.SIFT:  # SIFT
         sift = cv2.SIFT_create()
-        kps, vect_features = sift.detectAndCompute(img, None)
+        _, vect_features = sift.detectAndCompute(img, None)
+        return  vect_features, 'SIFT'
     elif algo_choice.ORB:  # ORB
         return ORB(img), "ORB"
     elif algo_choice.GLCM:  # glcm
@@ -125,9 +126,9 @@ def extractReqFeatures(fileName, algo_choice):
     elif algo_choice.HOG:  # hog
         return HOG(img), "HOG"
     elif algo_choice.VGG16:
-        return VGG16(fileName), "VGG16"
-    elif algo_choice.VGG16_1:
-        return VGG16_1(fileName), "VGG16_1"
+        return VGG16(fileName), "ResNet101"
+    # elif algo_choice.VGG16_1:
+    #     return VGG16_1(fileName), "VGG16_1"
 
 
 def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
@@ -177,11 +178,10 @@ def distance_f(l1, l2, distanceName):
 
 
 
-def Compute_RP(top,class_image_requete, noms_images_proches):
+def Compute_RP(top,class_image_requete, noms_images_proches, descripteur, distance, rp_process='rp'):
     rappel_precision=[]
     rp = []
     # position1=int(class_image_requete)//100
-    print(class_image_requete, noms_images_proches)
     position1=class_image_requete
     for j in range(top):
         # position2=int(noms_images_proches[j])//100
@@ -198,22 +198,30 @@ def Compute_RP(top,class_image_requete, noms_images_proches):
             if rappel_precision[j]=="pertinant":
                 val+=1
             j-=1
-        rp.append((((val/(i+1))*100),((val/top)*100)))
 
-    print(f"Rappel/Precision: {rp}")
-    return Display_RP(rp)
+        rappel = val/top
+        precision = val/(i+1)
+        rp.append((rappel,precision))
+    mean_r =round(sum(elt[0] for elt in rp)/len(rp)*100,2)
+    mean_p = round(sum(elt[1] for elt in rp)/len(rp)*100,2)
+    return Display_RP(rp, descripteur, distance, rp_process=rp_process ), mean_r, mean_p
 
-def Display_RP(rp):
-    x,y = zip(*rp)
-    print(f"X: {x}")
-    print(f"Y: {y}")
+def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
+    r, p = zip(*rp)
+    if rp_process == 'rp':
+        rappel = r
+        precision = p
+    if rp_process == 'Mrp':
+        rappel = ((r + np.roll(r,1))/2.0)[1::2]
+        precision = ((p + np.roll(p,1))/2.0)[1::2]
     fig = plt.figure()
-    plt.plot(y,x,'C1', label="VGG16" )
+    plt.plot(rappel, precision,'C1', label=descripteur)
     plt.xlabel('Rappel')
     plt.ylabel('Précison')
-    plt.title("R/P")
+    plt.title(f"{rp_process} descriptor: {descripteur} & distance: {distance}\n"
+              f"Total precision : {precision[-1]*100}%\n"
+              f"Total recall: {rappel[-1]*100}%")
     plt.legend()
-
     imgdata = StringIO()
     fig.savefig(imgdata, format='svg')
     imgdata.seek(0)
