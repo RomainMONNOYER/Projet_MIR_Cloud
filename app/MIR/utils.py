@@ -2,9 +2,12 @@
 import json
 import operator
 import os
+from io import StringIO
+
 import cv2
 import numpy as np
 from django.conf import settings
+from matplotlib import pyplot as plt
 from skimage.transform import resize
 from skimage import io, color, img_as_ubyte
 from skimage.feature import hog, greycomatrix, greycoprops, local_binary_pattern
@@ -170,3 +173,49 @@ def distance_f(l1, l2, distanceName):
     elif distanceName == DescriptorRequests.DistanceChoices.FLANN:
         distance = flann(l1, l2)
     return distance
+
+
+
+
+def Compute_RP(top,class_image_requete, noms_images_proches):
+    rappel_precision=[]
+    rp = []
+    # position1=int(class_image_requete)//100
+    print(class_image_requete, noms_images_proches)
+    position1=class_image_requete
+    for j in range(top):
+        # position2=int(noms_images_proches[j])//100
+        position2=noms_images_proches[j]
+        if position1==position2:
+            rappel_precision.append("pertinant")
+        else:
+            rappel_precision.append("non pertinant")
+    print(rappel_precision)
+    for i in range(top):
+        j=i
+        val=0
+        while j>=0:
+            if rappel_precision[j]=="pertinant":
+                val+=1
+            j-=1
+        rp.append((((val/(i+1))*100),((val/top)*100)))
+
+    print(f"Rappel/Precision: {rp}")
+    return Display_RP(rp)
+
+def Display_RP(rp):
+    x,y = zip(*rp)
+    print(f"X: {x}")
+    print(f"Y: {y}")
+    fig = plt.figure()
+    plt.plot(y,x,'C1', label="VGG16" )
+    plt.xlabel('Rappel')
+    plt.ylabel('Précison')
+    plt.title("R/P")
+    plt.legend()
+
+    imgdata = StringIO()
+    fig.savefig(imgdata, format='svg')
+    imgdata.seek(0)
+    data = imgdata.getvalue()
+    return data

@@ -10,6 +10,8 @@
 
 {% if voisins %}
     <h1>Compute Time : {{ time }} seconds</h1>
+    <p>{{graph|safe}}</p>
+    <p>{{graph2|safe}}</p>
     {% for voisin in voisins%}
         <img src="{{ voisin }}" alt="{{ voisin }}" style="max-height:300px">
     {% endfor %}

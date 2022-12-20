@@ -6,7 +6,7 @@ class ImageForm(forms.ModelForm):
     """Form for the image model"""
     class Meta:
         model = ImageRequests
-        fields = ('title', 'image')
+        fields = ('title', 'image', 'classification', 'subclassification')
 
 class SearchForm(forms.ModelForm):
     class Meta:

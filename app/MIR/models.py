@@ -1,8 +1,32 @@
+import enum
+
 from django.db import models
 
 
 class ImageRequests(models.Model):
+    class ClassChoices(models.IntegerChoices):
+        ARAIGNEE = 0
+        CHIEN = 1
+        OISEAU = 2
+        POISSON = 3
+        SINGE = 4
+    class SubClassChoices(models.IntegerChoices):
+        # BARN_SPIDER = 0
+        # WOLF_SPIDER = 1
+        # TRAP_DOOR_SPIDER = 2
+        # ORB_WEAVING_SPIDER = 3
+        # GARDEN_SPIDER = 4
+        # TARANTULA = 5
+        SIBERIAN_HUSKY= 0
+        LABRADOR_RETRIEVER = 1
+        BOXER = 2
+        CHIHUAHUA = 3
+        GOLDER_RETRIEVER = 4
+        ROTTWEILER = 5
+
     title = models.CharField(max_length=255)
+    classification = models.IntegerField(default=ClassChoices.ARAIGNEE, choices=ClassChoices.choices)
+    subclassification = models.IntegerField(default=SubClassChoices.SIBERIAN_HUSKY, choices=SubClassChoices.choices)
     date_upload = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='images/requests')
 
