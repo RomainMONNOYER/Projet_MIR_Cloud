@@ -1,13 +1,11 @@
-import enum
 import math
-from functools import partial
 
 import cv2
 import numpy as np
-import operator
-
 
 def euclidean(l1, l2):
+    l1 = np.array(l1)
+    l2 = np.array(l2)
     return np.linalg.norm(l1 - l2)
 
 
@@ -50,36 +48,7 @@ def bruteForceMatching(a, b):
     return np.mean(matches)
 
 
-def distance_f(l1, l2, distanceName):
-    if distanceName == "Euclidienne":
-        distance = euclidean(l1, l2)
-    elif distanceName in ["Correlation", "Chicarre", "Intersection", "Bhattacharyya"]:
-        if distanceName == "Correlation":
-            methode = cv2.HISTCMP_CORREL
-            distance = cv2.compareHist(np.float32(l1), np.float32(l2), methode)
-        elif distanceName == "Chicarre":
-            distance = chiSquareDistance(l1, l2)
-        elif distanceName == "Intersection":
-            methode = cv2.HISTCMP_INTERSECT
-            distance = cv2.compareHist(np.float32(l1), np.float32(l2), methode)
-        elif distanceName == "Bhattacharyya":
-            distance = bhatta(l1, l2)
-    elif distanceName == "Brute force":
-        distance = bruteForceMatching(l1, l2)
-    elif distanceName == "Flann":
-        distance = flann(l1, l2)
-    return distance
 
-
-def getkVoisins(lfeatures, req, k, distanceName):
-    ldistances = []
-    for i in range(len(lfeatures)):
-        dist = distance_f(req, lfeatures[i][1], distanceName)
-        ldistances.append((lfeatures[i][0], lfeatures[i][1], dist))
-    ordre = distanceName in ["Correlation", "Intersection"]
-    ldistances.sort(key=operator.itemgetter(2), reverse=ordre)
-
-    return [ldistances[i] for i in range(k)]
 
 
 

@@ -1,6 +1,3 @@
-import enum
-from functools import partial
-
 from django.db import models
 
 
@@ -13,13 +10,15 @@ class ImageRequests(models.Model):
         return self.title
 
 
-from .distances import euclidean, chiSquareDistance, bhatta, flann
 class DescriptorRequests(models.Model):
     class DistanceChoices(models.TextChoices):
-        EUCLIDIAN = 'Euclidean'
-        CHI = 'Chi Square'
-        BHATTA = 'Bhatta'
+        EUCLIDEAN = 'Euclidean'
+        CHI_SQUARE = 'Chi Square'
+        BHATTACHARYA = 'Bhattacharya'
         FLANN = 'Flann'
+        BRUTE_FORCE = 'Brute Force'
+        INTERSECTION = 'Intersection'
+        CORRELATION = 'Correlation'
 
 
     HSV = models.BooleanField(default=False)
@@ -30,7 +29,8 @@ class DescriptorRequests(models.Model):
     LBP = models.BooleanField(default=False)
     HOG = models.BooleanField(default=False)
     VGG16 = models.BooleanField(default=False)
-    distance = models.CharField(default=DistanceChoices.EUCLIDIAN, choices=DistanceChoices.choices, max_length=15)
+    VGG16_1 = models.BooleanField(default=False)
+    distance = models.CharField(default=DistanceChoices.EUCLIDEAN, choices=DistanceChoices.choices, max_length=15)
     top = models.IntegerField(default=5)
 
     def __str__(self):

@@ -4,9 +4,12 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
+
+
 from .forms import ImageForm, SearchForm
 from .models import ImageRequests
-from .utils import extractReqFeatures, getkVoisins, getkVoisins2_files
+from .utils import extractReqFeatures,getkVoisins2_files
+import time
 
 
 def index(request, *args, **kwargs):
@@ -40,12 +43,15 @@ def image_search(request, pk):
         form = SearchForm(request.POST)
         if form.is_valid():
             form.save()
+            start = time.time()
             vec, json_data = extractReqFeatures(image.image.url, algo_choice=form.instance)
-            tmp = getkVoisins2_files(vec, form.instance.top, json_data)
+            tmp = getkVoisins2_files(vec, form.instance.top, json_data, form.instance.distance)
+            end = time.time()
             voisins = [tmp[i][1] for i in range(len(tmp))]
-            print(tmp)
-            return render(request, 'search.html', {'pk': image.image, 'form': form, 'voisins':voisins})
-
+            return render(request, 'search.html', {'pk': image.image,
+                                                   'form': form,
+                                                   'voisins':voisins,
+                                                   'time': round(end-start,2)})
     else:
         form = SearchForm()
     return render(request, 'search.html', {'pk': image.image, 'form': form})
