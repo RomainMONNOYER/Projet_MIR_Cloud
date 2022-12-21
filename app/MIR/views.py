@@ -42,43 +42,36 @@ def image_search(request, pk):
         if form.is_valid():
             form.save()
             start = time.time()
-            vec, descriptor = extractReqFeatures(image.image.url, algo_choice=form.instance)
+            vec, descriptor = extractReqFeatures2(image.image.url, algo_choice=form.instance.descriptor1)
             tmp = getkVoisins2_files(vec, form.instance.top, descriptor, form.instance.distance)
             end = time.time()
             voisins = [tmp[i][1] for i in range(len(tmp))]
             noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
-            noms_voisins2 = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[1]) for voisin in voisins]
             graph1,mean_r, mean_p = Compute_RP(form.instance.top,
                                 image.classification,
                                 noms_voisins,
                                 descriptor,
                                 form.instance.distance)
-            graph2,_,_ =Compute_RP(form.instance.top,
-                       image.subclassification,
-                       noms_voisins2,
-                       descriptor,
-                       form.instance.distance)
             graph3,_,_ = Compute_RP(form.instance.top,
-                                  image.subclassification,
-                                  noms_voisins2,
+                                  image.classification,
+                                  noms_voisins,
                                   descriptor,
                                   form.instance.distance,
                                   rp_process = 'Mrp')
             return render(request, 'search.html', {'pk': image.image,
                                                    'class': ImageRequests.ClassChoices(image.classification).name,
-                                                   'subclass': ImageRequests.SubClassChoices(image.classification).name,
                                                    'form': form,
+                                                   '2_descriptors': False,
                                                    'voisins':voisins,
                                                    'time': round(end-start,2),
                                                    'MeanR':mean_r,
                                                    'MeanP':mean_p,
                                                    'graph': graph1,
-                                                   'graph2':graph2,
                                                    'graph3':graph3})
 
     else:
         form = SearchForm()
-    return render(request, 'search.html', {'pk': image.image, 'form': form})
+    return render(request, 'search.html', {'pk': image.image, 'form': form, '2_descriptors': False})
 def image_search2(request, pk):
     image = ImageRequests.objects.filter(id = pk).first()
     if request.method == 'POST':
@@ -98,8 +91,8 @@ def image_search2(request, pk):
                                                form.instance.distance)
             return render(request, 'search.html', {'pk': image.image,
                                                    'class': ImageRequests.ClassChoices(image.classification).name,
-                                                   'subclass': ImageRequests.SubClassChoices(image.classification).name,
                                                    'form': form,
+                                                   '2_descriptors': True,
                                                    'voisins':voisins,
                                                    'time': round(end-start,2),
                                                    'MeanR':mean_r,
@@ -107,4 +100,4 @@ def image_search2(request, pk):
                                                    'graph': graph1,})
     else:
         form = SearchForm()
-    return render(request, 'search.html', {'pk': image.image, 'form': form})
+    return render(request, 'search.html', {'pk': image.image, 'form': form, '2_descriptors': True})

@@ -1,10 +1,18 @@
 {% if pk %}
     <img src="{{ pk.url}}" alt="connect" style="max-height:300px">
     <h1>Class : {{ class }}</h1>
-    <h1>Subclass : {{ subclass }}</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <label for="id_descriptor1">Descriptor n°1 : </label>
+        {{ form.descriptor1 }}<br>
+        {% if 2_descriptors %}
+            <label for="id_descriptor2">Descriptor n°2 : </label>
+            {{ form.descriptor2 }}<br>
+        {% endif %}
+        <label for="id_distance">Distance : </label>
+        {{ form.distance }}<br>
+        <label for="id_top">Top : </label>
+        {{ form.top }}<br>
         <button type="submit">search</button>
     </form>
 {% endif %}
@@ -13,7 +21,7 @@
     <h1>Compute Time : {{ time }} seconds</h1>
     <p>Mean R: {{ MeanR }}%</p>
     <p>Mean P: {{ MeanP }}%</p>
-    <p>{{graph|safe}}</p>
+    <p sty>{{graph|safe}}</p>
     <p>{{graph2|safe}}</p>
     <p>{{graph3|safe}}</p>
     {% for voisin in voisins%}

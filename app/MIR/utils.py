@@ -256,7 +256,6 @@ def getkVoisins2_files222222(vec_descriptor, top, descriptor_folder1, descriptor
 
 def extractReqFeatures2(fileName, algo_choice):
     img = cv2.imread(f'/app{fileName}')
-    resized_img = resize(img, (128 * 4, 64 * 4))
     if algo_choice == DescriptorRequests.DescriptorChoices.BGR:
         return BGR(img), 'BGR'
     if algo_choice == DescriptorRequests.DescriptorChoices.HSV:
