@@ -136,21 +136,21 @@ MIR_DATABASE = 'MIR_DATASETS_B'
 
 from keras.applications import vgg16, resnet
 
-# VGG16 = vgg16.VGG16(
-#     include_top=True,
-#     weights='imagenet',
-#     input_tensor=None,
-#     input_shape=None,
-#     pooling=None,
-#     classes=1000,
-#     classifier_activation='softmax'
-# )
-
-VGG16 = model1=resnet.ResNet101(
+VGG16 = vgg16.VGG16(
     include_top=True,
     weights='imagenet',
     input_tensor=None,
     input_shape=None,
     pooling=None,
     classes=1000,
+    classifier_activation='softmax'
 )
+
+# VGG16 = model1=resnet.ResNet101(
+#     include_top=True,
+#     weights='imagenet',
+#     input_tensor=None,
+#     input_shape=None,
+#     pooling=None,
+#     classes=1000,
+# )

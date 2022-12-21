@@ -9,13 +9,12 @@ from django.template import loader
 
 from .forms import ImageForm, SearchForm
 from .models import ImageRequests
-from .utils import extractReqFeatures, getkVoisins2_files, Compute_RP
+from .utils import extractReqFeatures, getkVoisins2_files, Compute_RP, extractReqFeatures2, getkVoisins2_files222222
 import time
 
 
 def index(request, *args, **kwargs):
     latest_question_list = "This is my question"
-    print(f"Form: {request}")
     template = loader.get_template('test.html')
     context = {
         'latest_question_list': [latest_question_list],
@@ -66,6 +65,8 @@ def image_search(request, pk):
                                   form.instance.distance,
                                   rp_process = 'Mrp')
             return render(request, 'search.html', {'pk': image.image,
+                                                   'class': ImageRequests.ClassChoices(image.classification).name,
+                                                   'subclass': ImageRequests.SubClassChoices(image.classification).name,
                                                    'form': form,
                                                    'voisins':voisins,
                                                    'time': round(end-start,2),
@@ -74,21 +75,36 @@ def image_search(request, pk):
                                                    'graph': graph1,
                                                    'graph2':graph2,
                                                    'graph3':graph3})
+
     else:
         form = SearchForm()
     return render(request, 'search.html', {'pk': image.image, 'form': form})
-
-
-import matplotlib.pyplot as plt
-from io import StringIO
-
-def return_graph():
-    x = np.arange(0,np.pi*3,.1)
-    y = np.sin(x)
-    fig = plt.figure()
-    plt.plot(x,y)
-    imgdata = StringIO()
-    fig.savefig(imgdata, format='svg')
-    imgdata.seek(0)
-    data = imgdata.getvalue()
-    return data
+def image_search2(request, pk):
+    image = ImageRequests.objects.filter(id = pk).first()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            vec1, descriptor1 = extractReqFeatures2(image.image.url, algo_choice=form.instance.descriptor1)
+            vec2, descriptor2 = extractReqFeatures2(image.image.url, algo_choice=form.instance.descriptor2)
+            start = time.time()
+            tmp = getkVoisins2_files222222(np.concatenate([vec1, vec2]), form.instance.top, descriptor1, descriptor2, form.instance.distance)
+            end = time.time()
+            voisins = [tmp[i][1] for i in range(len(tmp))]
+            noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
+            graph1,mean_r, mean_p = Compute_RP(form.instance.top,
+                                               image.classification,
+                                               noms_voisins,
+                                               f"{descriptor1} + {descriptor2}",
+                                               form.instance.distance)
+            return render(request, 'search.html', {'pk': image.image,
+                                                   'class': ImageRequests.ClassChoices(image.classification).name,
+                                                   'subclass': ImageRequests.SubClassChoices(image.classification).name,
+                                                   'form': form,
+                                                   'voisins':voisins,
+                                                   'time': round(end-start,2),
+                                                   'MeanR':mean_r,
+                                                   'MeanP':mean_p,
+                                                   'graph': graph1,})
+    else:
+        form = SearchForm()
+    return render(request, 'search.html', {'pk': image.image, 'form': form})

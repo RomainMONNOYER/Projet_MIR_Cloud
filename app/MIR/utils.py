@@ -108,7 +108,6 @@ def VGG16_1(fileName):
 def extractReqFeatures(fileName, algo_choice):
     img = cv2.imread(f'/app{fileName}')
     resized_img = resize(img, (128 * 4, 64 * 4))
-    print(algo_choice)
     if algo_choice.BGR:
         return BGR(img), 'BGR'
     elif algo_choice.HSV:
@@ -126,7 +125,7 @@ def extractReqFeatures(fileName, algo_choice):
     elif algo_choice.HOG:  # hog
         return HOG(img), "HOG"
     elif algo_choice.VGG16:
-        return VGG16(fileName), "ResNet101"
+        return VGG16(fileName), "VGG16"
     # elif algo_choice.VGG16_1:
     #     return VGG16_1(fileName), "VGG16_1"
 
@@ -147,6 +146,8 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
     for i in range(top):
         lvoisins.append(ldistances[i])
     return lvoisins
+
+
 
 
 
@@ -190,7 +191,6 @@ def Compute_RP(top,class_image_requete, noms_images_proches, descripteur, distan
             rappel_precision.append("pertinant")
         else:
             rappel_precision.append("non pertinant")
-    print(rappel_precision)
     for i in range(top):
         j=i
         val=0
@@ -227,3 +227,50 @@ def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
     imgdata.seek(0)
     data = imgdata.getvalue()
     return data
+
+
+def getkVoisins2_files222222(vec_descriptor, top, descriptor_folder1, descriptor_folder2, distance_choice):
+    ldistances = []
+    for path, subdir, files in os.walk(os.path.join(settings.MEDIA_ROOT, descriptor_folder1)):
+        for f in files:
+            p1 = os.path.join(path, f)
+            des1 = np.loadtxt(p1)
+            p2 = os.path.join(settings.MEDIA_ROOT,descriptor_folder2,*p1.split(os.sep)[4:])
+            des2 = np.loadtxt(p2)
+            if descriptor_folder1 == 'BGR' or descriptor_folder1 == 'HSV':
+                des1 = des1.ravel()
+            if descriptor_folder2 == 'BGR' or descriptor_folder2 == 'HSV':
+                des2 = des2.ravel()
+            featureTOT = np.concatenate([des1,des2])
+
+            dist = distance_f(vec_descriptor, featureTOT, distance_choice)
+            name = os.path.splitext(f)[0]
+            ldistances.append((name.split('_')[4],
+                               os.path.join(settings.MEDIA_URL, settings.MIR_DATABASE, *p1.split(os.sep)[4:6],
+                                            name + '.jpg'), dist))
+    ldistances.sort(key=operator.itemgetter(2))
+    lvoisins = []
+    for i in range(top):
+        lvoisins.append(ldistances[i])
+    return lvoisins
+
+def extractReqFeatures2(fileName, algo_choice):
+    img = cv2.imread(f'/app{fileName}')
+    resized_img = resize(img, (128 * 4, 64 * 4))
+    if algo_choice == DescriptorRequests.DescriptorChoices.BGR:
+        return BGR(img), 'BGR'
+    if algo_choice == DescriptorRequests.DescriptorChoices.HSV:
+        return HSV(img), 'HSV'
+    elif algo_choice == DescriptorRequests.DescriptorChoices.ORB:  # ORB
+        return ORB(img), "ORB"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.GLCM:  # glcm
+        return GLCM(img), "GLCM"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.LBP:  # lbp
+        return LBP(img), "LBP"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.HOG:  # hog
+        return HOG(img), "HOG"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.VGG16:
+        return VGG16(fileName), "VGG16"
+
+
+

@@ -43,10 +43,20 @@ class DescriptorRequests(models.Model):
         BRUTE_FORCE = 'Brute Force'
         INTERSECTION = 'Intersection'
         CORRELATION = 'Correlation'
+    class DescriptorChoices(models.TextChoices):
+        HSV = 'HSV'
+        BGR = 'BGR'
+        SIFT = 'SIFT'
+        ORB = 'ORB'
+        GLCM = 'GLCM'
+        LBP = 'LBP'
+        HOG = 'HOG'
+        VGG16 = 'VGG16'
+        VGG16_1 = 'VGG16_1'
 
 
-    HSV = models.BooleanField(default=False)
     BGR = models.BooleanField(default=False)
+    HSV = models.BooleanField(default=False)
     SIFT = models.BooleanField(default=False)
     ORB = models.BooleanField(default=False)
     GLCM = models.BooleanField(default=False)
@@ -55,6 +65,8 @@ class DescriptorRequests(models.Model):
     VGG16 = models.BooleanField(default=False)
     VGG16_1 = models.BooleanField(default=False)
     distance = models.CharField(default=DistanceChoices.EUCLIDEAN, choices=DistanceChoices.choices, max_length=15)
+    descriptor1 = models.CharField(default=DescriptorChoices.BGR, choices=DescriptorChoices.choices, max_length=15)
+    descriptor2 = models.CharField(default=DescriptorChoices.BGR, choices=DescriptorChoices.choices, max_length=15)
     top = models.IntegerField(default=5)
 
     def __str__(self):
