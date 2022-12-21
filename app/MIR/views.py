@@ -34,7 +34,6 @@ def image_upload_view(request):
     else:
         form = ImageForm()
     return render(request, 'index.html', {'form': form})
-
 def image_search(request, pk):
     image = ImageRequests.objects.filter(id = pk).first()
     if request.method == 'POST':
@@ -101,3 +100,13 @@ def image_search2(request, pk):
     else:
         form = SearchForm()
     return render(request, 'search.html', {'pk': image.image, 'form': form, '2_descriptors': True})
+
+
+def image_from_db(request):
+    db_images = ImageRequests.objects.filter(is_database_img=True)
+    images = [(image.id, os.path.join(settings.MEDIA_URL, str(image.image))) for image in db_images]
+    return render(request, 'db.html', {'images':images})
+def image_history(request):
+    db_images = ImageRequests.objects.all().order_by('-date_upload')
+    images = [(image.id, os.path.join(settings.MEDIA_URL, str(image.image))) for image in db_images]
+    return render(request, 'db.html', {'images':images})

@@ -17,22 +17,15 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, 'app/.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, 'Projet_MIR_Cloud/.env'))
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env.bool('DEBUG_MODE')
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+# SECRET_KEY = 'django-insecure-blpo_nijwq-cg$7)9v92%)_br#@+_&bb79up42%=k-2ukb%_z)'
+# DEBUG = True
+# ALLOWED_HOSTS = ['*']
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-blpo_nijwq-cg$7)9v92%)_br#@+_&bb79up42%=k-2ukb%_z)'
-# SECRET_KEY = env('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = env.bool('DEBUG_MODE')
-DEBUG = True
-
-# ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-ALLOWED_HOSTS = ['*']
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -132,8 +125,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MIR_DATABASE = 'MIR_DATASETS_B'
 
-
-
 from keras.applications import vgg16, resnet
 
 VGG16 = vgg16.VGG16(
@@ -146,11 +137,11 @@ VGG16 = vgg16.VGG16(
     classifier_activation='softmax'
 )
 
-# VGG16 = model1=resnet.ResNet101(
-#     include_top=True,
-#     weights='imagenet',
-#     input_tensor=None,
-#     input_shape=None,
-#     pooling=None,
-#     classes=1000,
-# )
+RESNET101 = resnet.ResNet101(
+    include_top=True,
+    weights='imagenet',
+    input_tensor=None,
+    input_shape=None,
+    pooling=None,
+    classes=1000,
+)
