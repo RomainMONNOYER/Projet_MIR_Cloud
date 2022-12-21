@@ -41,11 +41,22 @@ class DescriptorRequests(models.Model):
         HOG = 'HOG'
         VGG16 = 'VGG16'
         VGG16_1 = 'VGG16_1'
+        RESNET101 = 'RESNET101'
+        RESNET50 = 'RESNET50'
+
+    class TopChoices(models.IntegerChoices):
+        TOP_5=5
+        TOP_10=10
+        TOP_20=20
+        TOP_50=50
+        TOP_100=100
+        TOP_200=200
+        TOP_MAX=0
 
     descriptor1 = models.CharField(default=DescriptorChoices.BGR, choices=DescriptorChoices.choices, max_length=15)
     descriptor2 = models.CharField(choices=DescriptorChoices.choices, max_length=15, blank=True)
     distance = models.CharField(default=DistanceChoices.EUCLIDEAN, choices=DistanceChoices.choices, max_length=15)
-    top = models.IntegerField(default=5)
+    top = models.IntegerField(default=TopChoices.TOP_5, choices=TopChoices.choices)
 
     def __str__(self):
         return str({"Descriptor1": self.descriptor1,

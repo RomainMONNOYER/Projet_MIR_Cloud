@@ -126,6 +126,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MIR_DATABASE = 'MIR_DATASETS_B'
 
 from keras.applications import vgg16, resnet
+from keras.models import Model
 
 VGG16 = vgg16.VGG16(
     include_top=True,
@@ -136,8 +137,16 @@ VGG16 = vgg16.VGG16(
     classes=1000,
     classifier_activation='softmax'
 )
-
 RESNET101 = resnet.ResNet101(
+    include_top=True,
+    weights='imagenet',
+    input_tensor=None,
+    input_shape=None,
+    pooling=None,
+    classes=1000,
+)
+
+RESNET50 = resnet.ResNet50(
     include_top=True,
     weights='imagenet',
     input_tensor=None,

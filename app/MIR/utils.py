@@ -17,7 +17,8 @@ from keras.applications.vgg16 import preprocess_input
 from keras.models import Model
 
 from .distances import euclidean, chiSquareDistance, bhatta, bruteForceMatching, flann
-from .models import DescriptorRequests
+from .enums import TopClassChoices
+from .models import DescriptorRequests, ImageRequests
 
 
 def BGR(img):
@@ -95,6 +96,22 @@ def VGG16(fileName):
     image = preprocess_input(image)
     feature = model.predict(image)  # predict the probability
     return np.array(feature[0])
+def RESNET101(fileName):
+    model = settings.RESNET101
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = model.predict(image)  # predict the probability
+    return np.array(feature[0])
+def RESNET50(fileName):
+    model = settings.RESNET50
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = model.predict(image)  # predict the probability
+    return np.array(feature[0])
 
 def VGG16_1(fileName):
     image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
@@ -103,32 +120,6 @@ def VGG16_1(fileName):
     image = preprocess_input(image)
     feature =  Model(inputs=settings.VGG16.input, outputs=settings.VGG16.layers[-2].output).predict(image)  # predict the probability
     return np.array(feature[0])
-
-
-def extractReqFeatures(fileName, algo_choice):
-    img = cv2.imread(f'/app{fileName}')
-    resized_img = resize(img, (128 * 4, 64 * 4))
-    if algo_choice.BGR:
-        return BGR(img), 'BGR'
-    elif algo_choice.HSV:
-        return HSV(img), "HSV"
-    elif algo_choice.SIFT:  # SIFT
-        sift = cv2.SIFT_create()
-        _, vect_features = sift.detectAndCompute(img, None)
-        return  vect_features, 'SIFT'
-    elif algo_choice.ORB:  # ORB
-        return ORB(img), "ORB"
-    elif algo_choice.GLCM:  # glcm
-        return GLCM(img), "GLCM"
-    elif algo_choice.LBP:  # lbp
-        return LBP(img), "LBP"
-    elif algo_choice.HOG:  # hog
-        return HOG(img), "HOG"
-    elif algo_choice.VGG16:
-        return VGG16(fileName), "VGG16"
-    # elif algo_choice.VGG16_1:
-    #     return VGG16_1(fileName), "VGG16_1"
-
 
 def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
     ldistances = []
@@ -254,7 +245,7 @@ def getkVoisins2_files222222(vec_descriptor, top, descriptor_folder1, descriptor
         lvoisins.append(ldistances[i])
     return lvoisins
 
-def extractReqFeatures2(fileName, algo_choice):
+def extractReqFeatures(fileName, algo_choice):
     img = cv2.imread(f'/app{fileName}')
     if algo_choice == DescriptorRequests.DescriptorChoices.BGR:
         return BGR(img), 'BGR'
@@ -270,6 +261,24 @@ def extractReqFeatures2(fileName, algo_choice):
         return HOG(img), "HOG"
     elif algo_choice == DescriptorRequests.DescriptorChoices.VGG16:
         return VGG16(fileName), "VGG16"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.VGG16_1:
+        return VGG16_1(fileName), "VGG16_1"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.RESNET101:
+        return RESNET101(fileName), "ResNet101"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.RESNET50:
+        return RESNET50(fileName), "ResNet50"
 
+
+def get_top(class_choice):
+    if class_choice == ImageRequests.ClassChoices.ARAIGNEE:
+        return TopClassChoices.TOP_SPIDERS
+    if class_choice == ImageRequests.ClassChoices.CHIEN:
+        return TopClassChoices.TOP_DOGS
+    if class_choice == ImageRequests.ClassChoices.OISEAU:
+        return TopClassChoices.TOP_BIRDS
+    if class_choice == ImageRequests.ClassChoices.POISSON:
+        return TopClassChoices.TOP_FISH
+    if class_choice == ImageRequests.ClassChoices.SINGE:
+        return TopClassChoices.TOP_MONKEY
 
 

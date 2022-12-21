@@ -8,8 +8,9 @@ from django.template import loader
 
 
 from .forms import ImageForm, SearchForm
-from .models import ImageRequests
-from .utils import extractReqFeatures, getkVoisins2_files, Compute_RP, extractReqFeatures2, getkVoisins2_files222222
+from .models import ImageRequests, DescriptorRequests
+from .utils import extractReqFeatures, getkVoisins2_files, Compute_RP, extractReqFeatures, getkVoisins2_files222222, \
+    get_top
 import time
 
 
@@ -40,18 +41,22 @@ def image_search(request, pk):
         form = SearchForm(request.POST)
         if form.is_valid():
             form.save()
+            if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
+                top = get_top(image.classification)
+            else:
+                top=form.instance.top
             start = time.time()
-            vec, descriptor = extractReqFeatures2(image.image.url, algo_choice=form.instance.descriptor1)
-            tmp = getkVoisins2_files(vec, form.instance.top, descriptor, form.instance.distance)
+            vec, descriptor = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor1)
+            tmp = getkVoisins2_files(vec, top, descriptor, form.instance.distance)
             end = time.time()
             voisins = [tmp[i][1] for i in range(len(tmp))]
             noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
-            graph1,mean_r, mean_p = Compute_RP(form.instance.top,
+            graph1,mean_r, mean_p = Compute_RP(top,
                                 image.classification,
                                 noms_voisins,
                                 descriptor,
                                 form.instance.distance)
-            graph3,_,_ = Compute_RP(form.instance.top,
+            graph3,_,_ = Compute_RP(top,
                                   image.classification,
                                   noms_voisins,
                                   descriptor,
@@ -76,14 +81,18 @@ def image_search2(request, pk):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            vec1, descriptor1 = extractReqFeatures2(image.image.url, algo_choice=form.instance.descriptor1)
-            vec2, descriptor2 = extractReqFeatures2(image.image.url, algo_choice=form.instance.descriptor2)
+            if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
+                top = get_top(image.classification)
+            else:
+                top=form.instance.top
+            vec1, descriptor1 = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor1)
+            vec2, descriptor2 = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor2)
             start = time.time()
-            tmp = getkVoisins2_files222222(np.concatenate([vec1, vec2]), form.instance.top, descriptor1, descriptor2, form.instance.distance)
+            tmp = getkVoisins2_files222222(np.concatenate([vec1, vec2]), top, descriptor1, descriptor2, form.instance.distance)
             end = time.time()
             voisins = [tmp[i][1] for i in range(len(tmp))]
             noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
-            graph1,mean_r, mean_p = Compute_RP(form.instance.top,
+            graph1,mean_r, mean_p = Compute_RP(top,
                                                image.classification,
                                                noms_voisins,
                                                f"{descriptor1} + {descriptor2}",
