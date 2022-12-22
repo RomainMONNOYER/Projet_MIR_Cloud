@@ -2,29 +2,59 @@
 {% include "header.html" %}
 <body>
 {% if pk %}
-    <img src="{{ pk.url}}" alt="connect" style="max-height:300px">
-    <h1>Class : {{ class }}</h1>
+<div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-3">
+                <img src="{{ pk.url}}" alt="connect" style="max-height:300px">
+{#                <h1>{{ img_obj.image.url }}</h1>#}
+            </div>
+            <div class="col-6"></div>
+        </div>
+            <div class="row">
+                <div class="col-6">
+                    <h1 style="color:white">Class : {{ class }}</h1>
+                    <h1 style="color:white">Subclass : {{ subclass }}</h1>
+                </div>
+            </div>
     <form method="post">
         {% csrf_token %}
-        <label for="id_descriptor1">Descriptor n°1 : </label>
-        {{ form.descriptor1 }}<br>
-        {% if 2_descriptors %}
-            <label for="id_descriptor2">Descriptor n°2 : </label>
-            {{ form.descriptor2 }}<br>
-        {% endif %}
-        <label for="id_distance">Distance : </label>
-        {{ form.distance }}<br>
-        <label for="id_top">Top : </label>
-        {{ form.top }}<br>
-        <button type="submit">search</button>
+            <div class="row">
+                <div class="col-2">
+                    <h3 style="color:white">Descripteur :</h3>
+                </div>
+                <div class="col-2">
+                    {{ form.descriptor1 }}
+                </div>
+                <div class="col-2">
+                    <h3 style="color:white">Distance :</h3>
+                </div>
+                <div class="col-2">
+                    {{ form.distance }}
+                </div>
+                <div class="col-2">
+                    <h3 style="color:white">Top :</h3>
+                </div>
+                <div class="col-2">
+                    {{ form.top }}
+                </div>
+            </div>
+            <div class="row">
+                {{ form.descriptor1 }}
+                {{ form.descriptor2 }}
+                <button type="submit" class="btn btn-secondary" style="text-align:center ">search</button>
+            </div>
+
     </form>
+</div>
 {% endif %}
+
 
 {% if voisins %}
     <h1>Compute Time : {{ time }} seconds</h1>
     <p>Mean R: {{ MeanR }}%</p>
     <p>Mean P: {{ MeanP }}%</p>
-    <p sty>{{graph|safe}}</p>
+    <p>{{graph|safe}}</p>
     <p>{{graph2|safe}}</p>
     <p>{{graph3|safe}}</p>
     {% for voisin in voisins%}
