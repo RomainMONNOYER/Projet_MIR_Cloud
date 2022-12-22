@@ -42,7 +42,11 @@ class DescriptorRequests(models.Model):
         VGG16 = 'VGG16'
         VGG16_1 = 'VGG16_1'
         RESNET101 = 'RESNET101'
+        RESNET101_1 = 'RESNET101_1'
         RESNET50 = 'RESNET50'
+        RESNET50_1 = 'RESNET50_1'
+        MOBILENET = 'MOBILENET'
+        XCEPTION = 'XCEPTION'
 
     class TopChoices(models.IntegerChoices):
         TOP_5=5

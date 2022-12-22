@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'MIR'
+    'MIR',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -123,10 +124,12 @@ MEDIA_URL = '/media/'
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+
 MIR_DATABASE = 'MIR_DATASETS_B'
 
-from keras.applications import vgg16, resnet
-from keras.models import Model
+from keras.applications import vgg16, resnet, mobilenet, xception
 
 VGG16 = vgg16.VGG16(
     include_top=True,
@@ -153,4 +156,22 @@ RESNET50 = resnet.ResNet50(
     input_shape=None,
     pooling=None,
     classes=1000,
+)
+MOBILENET=mobilenet.MobileNet(
+    include_top=True,
+    weights='imagenet',
+    input_tensor=None,
+    input_shape=None,
+    pooling=None,
+    classes=1000,
+)
+
+XCEPTION = xception.Xception(
+    include_top=True,
+    weights="imagenet",
+    input_tensor=None,
+    input_shape=None,
+    pooling=None,
+    classes=1000,
+    classifier_activation="softmax",
 )
