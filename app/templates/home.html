@@ -4,10 +4,10 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        Hi {{ user.username }}!
-        <p><a href="{% url 'logout' %}">Log Out</a></p>
+        <p style="text-align: center; color: white">Salut {{ user.username }}!</p>
+        <p style="text-align: center; color: white"><a href="{% url 'logout' %}">Déconnexion</a></p>
     {% else %}
-        <p>You are not logged in</p>
-        <a href="{% url 'login' %}">Log In</a>
+        <p style="color: white;text-align: center">Tu n'es pas connecté</p>
+        <a style="color: white;text-align: center" href="{% url 'login' %}"><p style="text-align: center">Connexion</p></a>
     {% endif %}
 {% endblock %}
