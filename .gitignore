@@ -137,7 +137,6 @@ GitHub.sublime-settings
 .history
 /.idea/
 /Projet_MIR_Cloud.iml
-/app/MIR/migrations/
 /virtualenvMIR/
 
 #media
