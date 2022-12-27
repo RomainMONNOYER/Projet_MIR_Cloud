@@ -1,0 +1,26 @@
+version: "3.1"
+
+#volumes:
+#  db-data:
+
+services:
+
+  django:
+    build: .
+    container_name: ${PROJECT_NAME}
+    restart: unless-stopped
+    command: bash -c "
+      python3 manage.py makemigrations
+      && python3 manage.py migrate
+      && python3 manage.py loaddata features/features.json
+      && gunicorn --bind 0.0.0.0:8000 workers 2 Projet_MIR_Cloud.wsgi:application"
+#      && python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+#      - ./app/:/app
+      - /home/docker/${PROJECT_NAME}/app:/app
+    ports:
+      - "8082:8000"
+networks:
+  default:
+    name: swag_default
+    external: true
