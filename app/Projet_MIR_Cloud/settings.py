@@ -21,6 +21,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, 'Projet_MIR_Cloud/.env'))
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG_MODE')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+CSRF_TRUSTED_ORIGINS = ["https://wynaut.polytechcloud.duckdns.org"]
 
 # SECRET_KEY = 'django-insecure-blpo_nijwq-cg$7)9v92%)_br#@+_&bb79up42%=k-2ukb%_z)'
 # DEBUG = True
