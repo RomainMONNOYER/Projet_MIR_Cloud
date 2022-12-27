@@ -1,61 +1,51 @@
-<html>
-{% include "header.html" %}
+{% extends 'base.html' %}
 
-<body>
-<div class="container">
-    <div class="form-group">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-                    <h2 style="color:white;text-align:center;">Titre</h2>
-                    {{ form.title }}
-            </div>
-            <div class="row">
-                <h2 style="color:white;text-align:center;">Image</h2>
-                <b style="text-align:center">{{ form.image }}</b>
-            </div>
-            <div class="row">
-                <div class="col-12 form-list">
-                    <h4 style="color:white;text-align:center;">Classification</h4><br>
+{% block title %}Upload{% endblock %}
+{% block content %}
+    <div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="card col-7">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <span style="text-align:center;">Titre</span>
+                        {{ form.title }}
+                    </div>
+                    <div class="col-6">
+                        <span style="text-align:center;">Image</span>
+                        <b style="text-align:center">{{ form.image }}</b>
+                    </div>
                 </div>
-{#                <div class="col-6 form-list">#}
-{#                    <h4 style="color:white;text-align:center;">Subclassification</h4>#}
-{##}
-{##}
-{#                </div>#}
-
-
-            </div>
-            <div class="row">
-                <div class="col-12 form-list">
-                    <b style="text-align:center">{{ form.classification }}</b><br>
+                <br>
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <span style="text-align:center;">Classification</span>
+                        <b style="text-align:center">{{ form.classification }}</b><br>
+                    </div>
+                    <div class="col-4 d-flex">
+                        <button type="submit" class="btn btn-secondary" style="text-align:center ">Upload</button>
+                    </div>
                 </div>
-{#                <div class="col-6 form-list">#}
-{##}
-{#                    <b style="align:center">{{ form.subclassification }}</b>#}
-{#                </div>#}
-
-                <button type="submit" class="btn btn-secondary" style="text-align:center ">Upload</button>
-            </div>
 
 
-        </form>
-    </div>
-
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-12 form-list">
-            {% if img_obj %}
-                <h3>Succesfully uploaded : {{img_obj.title}}</h3>
-                <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
-                <h1>{{ img_obj.image.url }}</h1>
-
+            </form>
         </div>
     </div>
 
-            {% endif %}
-</div>
-</body>
-</html>
 
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 form-list">
+                {% if img_obj %}
+                    <h3>Succesfully uploaded : {{img_obj.title}}</h3>
+                    <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
+                    <h1>{{ img_obj.image.url }}</h1>
+
+            </div>
+        </div>
+
+                {% endif %}
+    </div>
+{% endblock %}

@@ -250,8 +250,8 @@ def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
     plt.xlabel('Rappel')
     plt.ylabel('Précison')
     plt.title(f"{rp_process} descriptor: {descripteur} & distance: {distance}\n"
-              f"Total precision : {precision[-1]*100}%\n"
-              f"Total recall: {rappel[-1]*100}%")
+              f"Total precision : {round(precision[-1]*100,2)}%\n"
+              f"Total recall: {round(rappel[-1]*100,2)}%")
     plt.legend()
     imgdata = StringIO()
     fig.savefig(imgdata, format='svg')
