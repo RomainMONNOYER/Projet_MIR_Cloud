@@ -23,7 +23,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN  pip install --upgrade pip
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
-RUN python3 manage.py makemigrations && python3 manage.py migrate
+RUN python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py loaddata features/features.json
 
 
 #CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]

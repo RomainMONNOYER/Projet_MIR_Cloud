@@ -11,4 +11,4 @@ class ImageForm(forms.ModelForm):
 class SearchForm(forms.ModelForm):
     class Meta:
         model = DescriptorRequests
-        fields = ('descriptor1', 'descriptor2', 'distance', 'top')
+        fields = ('descriptor1', 'descriptor2', 'distance', 'top', 'R_precision')
