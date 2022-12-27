@@ -1,10 +1,61 @@
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-</form>
-{% if img_obj %}
-    <h3>Succesfully uploaded : {{img_obj.title}}</h3>
-    <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
-    <h1>{{ img_obj.image.url }}</h1>
-{% endif %}
+<html>
+{% include "header.html" %}
+
+<body>
+<div class="container">
+    <div class="form-group">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                    <h2 style="color:white;text-align:center;">Titre</h2>
+                    {{ form.title }}
+            </div>
+            <div class="row">
+                <h2 style="color:white;text-align:center;">Image</h2>
+                <b style="text-align:center">{{ form.image }}</b>
+            </div>
+            <div class="row">
+                <div class="col-12 form-list">
+                    <h4 style="color:white;text-align:center;">Classification</h4><br>
+                </div>
+{#                <div class="col-6 form-list">#}
+{#                    <h4 style="color:white;text-align:center;">Subclassification</h4>#}
+{##}
+{##}
+{#                </div>#}
+
+
+            </div>
+            <div class="row">
+                <div class="col-12 form-list">
+                    <b style="text-align:center">{{ form.classification }}</b><br>
+                </div>
+{#                <div class="col-6 form-list">#}
+{##}
+{#                    <b style="align:center">{{ form.subclassification }}</b>#}
+{#                </div>#}
+
+                <button type="submit" class="btn btn-secondary" style="text-align:center ">Upload</button>
+            </div>
+
+
+        </form>
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 form-list">
+            {% if img_obj %}
+                <h3>Succesfully uploaded : {{img_obj.title}}</h3>
+                <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
+                <h1>{{ img_obj.image.url }}</h1>
+
+        </div>
+    </div>
+
+            {% endif %}
+</div>
+</body>
+</html>
+
