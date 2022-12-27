@@ -45,7 +45,6 @@ def image_upload_view2(request):
 
 @login_required()
 def image_search(request, pk):
-    print("-- in search --")
     image = ImageRequests.objects.filter(id = pk).first()
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -134,13 +133,13 @@ def image_search2(request, pk):
 @login_required()
 def image_from_db(request):
     db_images = ImageRequests.objects.filter(is_database_img=True)
-    images = [(image.id, os.path.join(settings.MEDIA_URL, str(image.image))) for image in db_images]
+    images = [(image.id, os.path.join(settings.MEDIA_URL, str(image.image)), image.title, ImageRequests.ClassChoices(image.classification).name) for image in db_images]
     return render(request, 'db.html', {'images':images,
                                        'title':'database'})
 
 @login_required
 def image_history(request):
     db_images = ImageRequests.objects.all().order_by('-date_upload')
-    images = [(image.id, os.path.join(settings.MEDIA_URL, str(image.image))) for image in db_images]
+    images = [(image.id, os.path.join(settings.MEDIA_URL, str(image.image)), image.title, ImageRequests.ClassChoices(image.classification).name) for image in db_images]
     return render(request, 'db.html', {'images':images,
                                        'title': 'history'})
