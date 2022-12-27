@@ -1,18 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload{% endblock %}
+
+{% block content %}
 {% if pk %}
-    <img src="{{ pk.url}}" alt="connect" style="max-height:300px">
-    <h1>{{ img_obj.image.url }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">search</button>
-    </form>
+<div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-4">
+                <div class="card" style="width: 25rem;">
+                    <h5 class="card-title" style="text-align: center">Image Request</h5>
+                    <img class="card-img-top" src="{{ pk.url }}" alt="{{ image }}">
+                    <div class="card-body">
+                        <div class="card-text alert alert-info" role="alert">
+                        {{ class}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <br>
+    <div class="row">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                {% if oneDescriptor %}
+                    <div class="col-3">
+                        <span style="color:white">Descripteur :</span>
+                        {{ form.descriptor1 }}
+                    </div>
+                {% else %}
+                    <div class="col-3">
+                        <span style="color:white">Descripteur 1:</span>
+                        {{ form.descriptor1 }}
+                    </div>
+                    <div class="col-3">
+                        <span style="color:white">Descripteur 2:</span>
+                        {{ form.descriptor2 }}
+                    </div>
+                {% endif %}
+                <div class="col-3">
+                    <span style="color:white">Distance :</span>
+                    {{ form.distance }}
+                </div>
+                <div class="col-3">
+                    <span style="color:white">Top :</span>
+                    {{ form.top }}
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-secondary" style="text-align:center ">search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endif %}
 
-{% if voisins %}
-    <h1>Compute Time : {{ time }} seconds</h1>
-    <p>{{graph|safe}}</p>
-    <p>{{graph2|safe}}</p>
-    {% for voisin in voisins%}
-        <img src="{{ voisin }}" alt="{{ voisin }}" style="max-height:300px">
-    {% endfor %}
-{% endif %}
+
+<div class="container">
+    <p style="text-align: center; color: white">
+        {% if voisins %}
+            <div class="row">
+            <div class="col-12">
+                <div class="alert alert-light" role="alert"style="text-align: center;">Compute time: {{ time }}
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="row">
+                    <div class="alert alert-light" role="alert"style="text-align: center;">Mean Recall: {{ MeanR }}%
+                    </div>
+                    <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph|safe}}</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="alert alert-light" role="alert"style="text-align: center;">Mean Precision: {{ MeanR }}%
+                    </div>
+                <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph3|safe}}</p>
+            </div>
+            </div>
+            <div class="row">
+                {% for voisin in voisins%}
+                    <div class="col-3">
+                        <div class="card" style="width: 20rem; max-height: 50rem">
+                            <img class="card-img-top" src="{{ voisin }}" alt="{{ voisin }}">
+                            <div class="card-body">
+                                <h5 class="card-title" style="text-align: center">Top: {{ forloop.counter }}</h5>
+                             </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </p>
+</div>
+{% endblock %}

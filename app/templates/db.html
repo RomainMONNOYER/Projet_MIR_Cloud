@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Images from {{ title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for id, image in images %}
+            <div class="col-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ image }}" alt="{{ image }}" style="height: 200px">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <div class="btn-wrapper text-center d-flex justify-content-between">
+                            <a href="/search/{{ id }}" class="btn btn-secondary  btn-sm text-white d-flex align-items-center">1 Descriptor</a>
+                            <a href="/search-2descriptors/{{ id }}" class="btn btn-warning" style="">2 Descriptors</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

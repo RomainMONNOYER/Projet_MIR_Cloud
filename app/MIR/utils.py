@@ -17,7 +17,8 @@ from keras.applications.vgg16 import preprocess_input
 from keras.models import Model
 
 from .distances import euclidean, chiSquareDistance, bhatta, bruteForceMatching, flann
-from .models import DescriptorRequests
+from .enums import TopClassChoices
+from .models import DescriptorRequests, ImageRequests
 
 
 def BGR(img):
@@ -35,6 +36,11 @@ def HSV(img):
     return np.concatenate((histH, np.concatenate((histS, histV), axis=None)), axis=None)
 
 
+def SIFT(img):
+    sift = cv2.SIFT_create()
+    _ , vect_features = sift.detectAndCompute(img,None)
+    print(vect_features)
+    return vect_features
 def ORB(img):
     orb = cv2.ORB_create()
     _, vect_features = orb.detectAndCompute(img, None)
@@ -95,6 +101,39 @@ def VGG16(fileName):
     image = preprocess_input(image)
     feature = model.predict(image)  # predict the probability
     return np.array(feature[0])
+def RESNET101(fileName):
+    model = settings.RESNET101
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = model.predict(image)  # predict the probability
+    return np.array(feature[0])
+def RESNET101_1(fileName):
+    model = settings.RESNET101
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = Model(inputs=settings.RESNET101.input, outputs=settings.RESNET101.layers[-2].output).predict(image)# predict the probability
+    return np.array(feature[0])
+def RESNET50(fileName):
+    model = settings.RESNET50
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = model.predict(image)  # predict the probability
+    return np.array(feature[0])
+
+def RESNET50_1(fileName):
+    model = settings.RESNET50
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = Model(inputs=settings.RESNET50.input, outputs=settings.RESNET50.layers[-2].output).predict(image)# predict the probability
+    return np.array(feature[0])
 
 def VGG16_1(fileName):
     image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
@@ -103,32 +142,22 @@ def VGG16_1(fileName):
     image = preprocess_input(image)
     feature =  Model(inputs=settings.VGG16.input, outputs=settings.VGG16.layers[-2].output).predict(image)  # predict the probability
     return np.array(feature[0])
-
-
-def extractReqFeatures(fileName, algo_choice):
-    img = cv2.imread(f'/app{fileName}')
-    resized_img = resize(img, (128 * 4, 64 * 4))
-    print(algo_choice)
-    if algo_choice.BGR:
-        return BGR(img), 'BGR'
-    elif algo_choice.HSV:
-        return HSV(img), "HSV"
-    elif algo_choice.SIFT:  # SIFT
-        sift = cv2.SIFT_create()
-        kps, vect_features = sift.detectAndCompute(img, None)
-    elif algo_choice.ORB:  # ORB
-        return ORB(img), "ORB"
-    elif algo_choice.GLCM:  # glcm
-        return GLCM(img), "GLCM"
-    elif algo_choice.LBP:  # lbp
-        return LBP(img), "LBP"
-    elif algo_choice.HOG:  # hog
-        return HOG(img), "HOG"
-    elif algo_choice.VGG16:
-        return VGG16(fileName), "VGG16"
-    elif algo_choice.VGG16_1:
-        return VGG16_1(fileName), "VGG16_1"
-
+def MOBILENET(fileName):
+    model = settings.MOBILENET
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = model.predict(image)  # predict the probability
+    return np.array(feature[0])
+def XCEPTION(fileName):
+    model = settings.XCEPTION
+    image = tf.keras.utils.load_img(f'/app{fileName}', target_size=(224, 224))
+    image = tf.keras.utils.img_to_array(image)
+    image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
+    image = preprocess_input(image)
+    feature = model.predict(image)  # predict the probability
+    return np.array(feature[0])
 
 def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
     ldistances = []
@@ -136,6 +165,8 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
         for f in files:
             p = os.path.join(path, f)
             des = np.loadtxt(p)
+            if des is None:
+                continue
             dist = distance_f(vec_descriptor, des, distance_choice)
             name = os.path.splitext(f)[0]
             ldistances.append((name.split('_')[4],
@@ -146,6 +177,8 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
     for i in range(top):
         lvoisins.append(ldistances[i])
     return lvoisins
+
+
 
 
 
@@ -177,11 +210,10 @@ def distance_f(l1, l2, distanceName):
 
 
 
-def Compute_RP(top,class_image_requete, noms_images_proches):
+def Compute_RP(top,class_image_requete, noms_images_proches, descripteur, distance, rp_process='rp'):
     rappel_precision=[]
     rp = []
     # position1=int(class_image_requete)//100
-    print(class_image_requete, noms_images_proches)
     position1=class_image_requete
     for j in range(top):
         # position2=int(noms_images_proches[j])//100
@@ -190,7 +222,6 @@ def Compute_RP(top,class_image_requete, noms_images_proches):
             rappel_precision.append("pertinant")
         else:
             rappel_precision.append("non pertinant")
-    print(rappel_precision)
     for i in range(top):
         j=i
         val=0
@@ -198,24 +229,105 @@ def Compute_RP(top,class_image_requete, noms_images_proches):
             if rappel_precision[j]=="pertinant":
                 val+=1
             j-=1
-        rp.append((((val/(i+1))*100),((val/top)*100)))
 
-    print(f"Rappel/Precision: {rp}")
-    return Display_RP(rp)
+        rappel = val/top
+        precision = val/(i+1)
+        rp.append((rappel,precision))
+    mean_r =round(sum(elt[0] for elt in rp)/len(rp)*100,2)
+    mean_p = round(sum(elt[1] for elt in rp)/len(rp)*100,2)
+    return Display_RP(rp, descripteur, distance, rp_process=rp_process ), mean_r, mean_p
 
-def Display_RP(rp):
-    x,y = zip(*rp)
-    print(f"X: {x}")
-    print(f"Y: {y}")
+def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
+    r, p = zip(*rp)
+    if rp_process == 'rp':
+        rappel = r
+        precision = p
+    if rp_process == 'Mrp':
+        rappel = ((r + np.roll(r,1))/2.0)[1::2]
+        precision = ((p + np.roll(p,1))/2.0)[1::2]
     fig = plt.figure()
-    plt.plot(y,x,'C1', label="VGG16" )
+    plt.plot(rappel, precision,'C1', label=descripteur)
     plt.xlabel('Rappel')
     plt.ylabel('Précison')
-    plt.title("R/P")
+    plt.title(f"{rp_process} descriptor: {descripteur} & distance: {distance}\n"
+              f"Total precision : {round(precision[-1]*100,2)}%\n"
+              f"Total recall: {round(rappel[-1]*100,2)}%")
     plt.legend()
-
     imgdata = StringIO()
     fig.savefig(imgdata, format='svg')
     imgdata.seek(0)
     data = imgdata.getvalue()
     return data
+
+
+def getkVoisins2_files222222(vec_descriptor, top, descriptor_folder1, descriptor_folder2, distance_choice):
+    ldistances = []
+    for path, subdir, files in os.walk(os.path.join(settings.MEDIA_ROOT, descriptor_folder1)):
+        for f in files:
+            p1 = os.path.join(path, f)
+            des1 = np.loadtxt(p1)
+            p2 = os.path.join(settings.MEDIA_ROOT,descriptor_folder2,*p1.split(os.sep)[4:])
+            des2 = np.loadtxt(p2)
+            if descriptor_folder1 == 'BGR' or descriptor_folder1 == 'HSV':
+                des1 = des1.ravel()
+            if descriptor_folder2 == 'BGR' or descriptor_folder2 == 'HSV':
+                des2 = des2.ravel()
+            featureTOT = np.concatenate([des1,des2])
+
+            dist = distance_f(vec_descriptor, featureTOT, distance_choice)
+            name = os.path.splitext(f)[0]
+            ldistances.append((name.split('_')[4],
+                               os.path.join(settings.MEDIA_URL, settings.MIR_DATABASE, *p1.split(os.sep)[4:6],
+                                            name + '.jpg'), dist))
+    ldistances.sort(key=operator.itemgetter(2))
+    lvoisins = []
+    for i in range(top):
+        lvoisins.append(ldistances[i])
+    return lvoisins
+
+def extractReqFeatures(fileName, algo_choice):
+    img = cv2.imread(f'/app{fileName}')
+    if algo_choice == DescriptorRequests.DescriptorChoices.BGR:
+        return BGR(img), 'BGR'
+    if algo_choice == DescriptorRequests.DescriptorChoices.HSV:
+        return HSV(img), 'HSV'
+    elif algo_choice == DescriptorRequests.DescriptorChoices.SIFT:  # ORB
+        return SIFT(img), "SIFT"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.ORB:  # ORB
+        return ORB(img), "ORB"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.GLCM:  # glcm
+        return GLCM(img), "GLCM"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.LBP:  # lbp
+        return LBP(img), "LBP"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.HOG:  # hog
+        return HOG(img), "HOG"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.VGG16:
+        return VGG16(fileName), "VGG16"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.VGG16_1:
+        return VGG16_1(fileName), "VGG16_1"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.RESNET101:
+        return RESNET101(fileName), "ResNet101"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.RESNET101_1:
+        return RESNET101_1(fileName), "ResNet101_1"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.RESNET50:
+        return RESNET50(fileName), "ResNet50"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.RESNET50_1:
+        return RESNET50_1(fileName), "ResNet50_1"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.MOBILENET:
+        return MOBILENET(fileName), "MobileNet"
+    elif algo_choice == DescriptorRequests.DescriptorChoices.XCEPTION:
+        return MOBILENET(fileName), "Xception"
+
+def get_top(class_choice):
+    if class_choice == ImageRequests.ClassChoices.ARAIGNEE:
+        return TopClassChoices.TOP_SPIDERS
+    if class_choice == ImageRequests.ClassChoices.CHIEN:
+        return TopClassChoices.TOP_DOGS
+    if class_choice == ImageRequests.ClassChoices.OISEAU:
+        return TopClassChoices.TOP_BIRDS
+    if class_choice == ImageRequests.ClassChoices.POISSON:
+        return TopClassChoices.TOP_FISH
+    if class_choice == ImageRequests.ClassChoices.SINGE:
+        return TopClassChoices.TOP_MONKEY
+
+

@@ -10,28 +10,16 @@ class ImageRequests(models.Model):
         OISEAU = 2
         POISSON = 3
         SINGE = 4
-    class SubClassChoices(models.IntegerChoices):
-        # BARN_SPIDER = 0
-        # WOLF_SPIDER = 1
-        # TRAP_DOOR_SPIDER = 2
-        # ORB_WEAVING_SPIDER = 3
-        # GARDEN_SPIDER = 4
-        # TARANTULA = 5
-        SIBERIAN_HUSKY= 0
-        LABRADOR_RETRIEVER = 1
-        BOXER = 2
-        CHIHUAHUA = 3
-        GOLDER_RETRIEVER = 4
-        ROTTWEILER = 5
 
     title = models.CharField(max_length=255)
     classification = models.IntegerField(default=ClassChoices.ARAIGNEE, choices=ClassChoices.choices)
-    subclassification = models.IntegerField(default=SubClassChoices.SIBERIAN_HUSKY, choices=SubClassChoices.choices)
-    date_upload = models.DateTimeField(auto_now_add=True)
+    is_database_img = models.BooleanField(default=False)
     image = models.ImageField(upload_to='images/requests')
+    date_upload = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return {"Title": self.title,
+                "Class": self.classification,}
 
 
 class DescriptorRequests(models.Model):
@@ -43,29 +31,39 @@ class DescriptorRequests(models.Model):
         BRUTE_FORCE = 'Brute Force'
         INTERSECTION = 'Intersection'
         CORRELATION = 'Correlation'
+    class DescriptorChoices(models.TextChoices):
+        BGR = 'BGR'
+        HSV = 'HSV'
+        SIFT = 'SIFT'
+        ORB = 'ORB'
+        GLCM = 'GLCM'
+        LBP = 'LBP'
+        HOG = 'HOG'
+        VGG16 = 'VGG16'
+        VGG16_1 = 'VGG16_1'
+        RESNET101 = 'RESNET101'
+        RESNET101_1 = 'RESNET101_1'
+        RESNET50 = 'RESNET50'
+        RESNET50_1 = 'RESNET50_1'
+        MOBILENET = 'MOBILENET'
+        XCEPTION = 'XCEPTION'
 
+    class TopChoices(models.IntegerChoices):
+        TOP_5=5
+        TOP_10=10
+        TOP_20=20
+        TOP_50=50
+        TOP_100=100
+        TOP_200=200
+        TOP_MAX=0
 
-    HSV = models.BooleanField(default=False)
-    BGR = models.BooleanField(default=False)
-    SIFT = models.BooleanField(default=False)
-    ORB = models.BooleanField(default=False)
-    GLCM = models.BooleanField(default=False)
-    LBP = models.BooleanField(default=False)
-    HOG = models.BooleanField(default=False)
-    VGG16 = models.BooleanField(default=False)
-    VGG16_1 = models.BooleanField(default=False)
+    descriptor1 = models.CharField(default=DescriptorChoices.BGR, choices=DescriptorChoices.choices, max_length=15)
+    descriptor2 = models.CharField(choices=DescriptorChoices.choices, max_length=15, blank=True)
     distance = models.CharField(default=DistanceChoices.EUCLIDEAN, choices=DistanceChoices.choices, max_length=15)
-    top = models.IntegerField(default=5)
+    top = models.IntegerField(default=TopChoices.TOP_5, choices=TopChoices.choices)
 
     def __str__(self):
-        return str({"BGR": self.BGR,
-                    "HSV": self.HSV,
-                    "SIFT": self.SIFT,
-                    "ORB": self.ORB,
-                    "GLCM": self.GLCM,
-                    "LBP": self.LBP,
-                    "HOG": self.HOG,
-                    "VGG16": self.VGG16,
+        return str({"Descriptor1": self.descriptor1,
+                    "Descriptor2": self.descriptor2,
                     "Distance": self.distance,
-                    "Top": self.top,
-                    })
+                    "Top": self.top,})
