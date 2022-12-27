@@ -61,6 +61,7 @@ class DescriptorRequests(models.Model):
     descriptor2 = models.CharField(choices=DescriptorChoices.choices, max_length=15, blank=True)
     distance = models.CharField(default=DistanceChoices.EUCLIDEAN, choices=DistanceChoices.choices, max_length=15)
     top = models.IntegerField(default=TopChoices.TOP_5, choices=TopChoices.choices)
+    R_precision = models.IntegerField(default=10)
 
     def __str__(self):
         return str({"Descriptor1": self.descriptor1,

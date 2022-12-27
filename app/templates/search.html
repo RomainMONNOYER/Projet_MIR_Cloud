@@ -24,16 +24,16 @@
             {% csrf_token %}
             <div class="row">
                 {% if oneDescriptor %}
-                    <div class="col-3">
+                    <div class="col-4">
                         <span style="color:white">Descripteur :</span>
                         {{ form.descriptor1 }}
                     </div>
                 {% else %}
-                    <div class="col-3">
+                    <div class="col-2">
                         <span style="color:white">Descripteur 1:</span>
                         {{ form.descriptor1 }}
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <span style="color:white">Descripteur 2:</span>
                         {{ form.descriptor2 }}
                     </div>
@@ -42,14 +42,21 @@
                     <span style="color:white">Distance :</span>
                     {{ form.distance }}
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <span style="color:white">Top :</span>
                     {{ form.top }}
                 </div>
                 <div class="col-3">
-                    <button type="submit" class="btn btn-secondary" style="text-align:center ">search</button>
+                    <span style="color:white">Rth: </span>
+                    {{ form.R_precision }}
                 </div>
             </div>
+        <div class="row">
+
+            <div class="col-3">
+                <button type="submit" class="btn btn-secondary" style="text-align:center ">search</button>
+            </div>
+        </div>
         </form>
     </div>
 </div>
@@ -60,22 +67,32 @@
     <p style="text-align: center; color: white">
         {% if voisins %}
             <div class="row">
-            <div class="col-12">
+            <div class="offset-4 col-4 offset-4">
                 <div class="alert alert-light" role="alert"style="text-align: center;">Compute time: {{ time }} seconds
                 </div>
             </div>
+            <div class="row">
 
-            <div class="col-6">
-                <div class="row">
+                <div class="col-6">
+                    <div class="alert alert-light" role="alert"style="text-align: center;">R-Precision: {{ Rprecision }}%
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="alert alert-light" role="alert"style="text-align: center;">F-Mesure: {{ Fmesure }}%
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
                     <div class="alert alert-light" role="alert"style="text-align: center;">Mean Recall: {{ MeanR }}%
                     </div>
                     <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph|safe}}</p>
                 </div>
-            </div>
-            <div class="col-6">
-                <div class="alert alert-light" role="alert"style="text-align: center;">Mean Precision: {{ MeanR }}%
+                <div class="col-6">
+                    <div class="alert alert-light" role="alert"style="text-align: center;">Mean Precision: {{ MeanP }}%
                     </div>
-                <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph3|safe}}</p>
+                    <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph3|safe}}</p>
+                </div>
             </div>
             </div>
             <div class="row">

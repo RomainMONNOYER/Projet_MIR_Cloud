@@ -60,16 +60,16 @@ def image_search(request, pk):
             end = time.time()
             voisins = [tmp[i][1] for i in range(len(tmp))]
             noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
-            graph1,mean_r, mean_p = Compute_RP(top,
+            graph1,mean_r, mean_p, r_precision, f_mesure = Compute_RP(top,
                                 image.classification,
                                 noms_voisins,
                                 descriptor,
-                                form.instance.distance)
-            graph3,_,_ = Compute_RP(top,
+                                form.instance.distance,r=form.instance.R_precision)
+            graph3,_,_, _,_= Compute_RP(top,
                                   image.classification,
                                   noms_voisins,
                                   descriptor,
-                                  form.instance.distance,
+                                  form.instance.distance, r=10,
                                   rp_process = 'Mrp')
             return render(request, 'search.html', {'pk': image.image,
                                                    'class': ImageRequests.ClassChoices(image.classification).name,
@@ -79,6 +79,8 @@ def image_search(request, pk):
                                                    'time': round(end-start,2),
                                                    'MeanR':mean_r,
                                                    'MeanP':mean_p,
+                                                   'Rprecision': r_precision,
+                                                   'Fmesure': f_mesure,
                                                    'graph': graph1,
                                                    'graph3':graph3,
                                                    'oneDescriptor':True})
@@ -104,16 +106,16 @@ def image_search2(request, pk):
             end = time.time()
             voisins = [tmp[i][1] for i in range(len(tmp))]
             noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
-            graph1,mean_r, mean_p = Compute_RP(top,
+            graph1,mean_r, mean_p,r_precision, f_mesure = Compute_RP(top,
                                                image.classification,
                                                noms_voisins,
                                                f"{descriptor1} + {descriptor2}",
-                                               form.instance.distance)
-            graph3,_,_ = Compute_RP(top,
+                                               form.instance.distance, r=form.instance.R_precision)
+            graph3,_,_,_,_ = Compute_RP(top,
                                     image.classification,
                                     noms_voisins,
                                     f"{descriptor1} + {descriptor2}",
-                                    form.instance.distance,
+                                    form.instance.distance, r=10,
                                     rp_process = 'Mrp')
             return render(request, 'search.html', {'pk': image.image,
                                                    'class': ImageRequests.ClassChoices(image.classification).name,
@@ -123,6 +125,8 @@ def image_search2(request, pk):
                                                    'time': round(end-start,2),
                                                    'MeanR':mean_r,
                                                    'MeanP':mean_p,
+                                                   'Rprecision': r_precision,
+                                                   'Fmesure': f_mesure,
                                                    'graph': graph1,
                                                    'graph3':graph3,
                                                    'oneDescriptor':False})

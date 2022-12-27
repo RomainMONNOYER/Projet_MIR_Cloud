@@ -210,7 +210,7 @@ def distance_f(l1, l2, distanceName):
 
 
 
-def Compute_RP(top,class_image_requete, noms_images_proches, descripteur, distance, rp_process='rp'):
+def Compute_RP(top,class_image_requete, noms_images_proches, descripteur, distance, r,rp_process='rp'):
     rappel_precision=[]
     rp = []
     # position1=int(class_image_requete)//100
@@ -235,8 +235,18 @@ def Compute_RP(top,class_image_requete, noms_images_proches, descripteur, distan
         rp.append((rappel,precision))
     mean_r =round(sum(elt[0] for elt in rp)/len(rp)*100,2)
     mean_p = round(sum(elt[1] for elt in rp)/len(rp)*100,2)
-    return Display_RP(rp, descripteur, distance, rp_process=rp_process ), mean_r, mean_p
+    return Display_RP(rp, descripteur, distance, rp_process=rp_process ), mean_r, mean_p, r_precision(rappel_precision, r), f_mesure(mean_p, mean_r)
 
+def f_mesure(p,r):
+    return round((2*p*r)/(p+r)  ,2)
+def r_precision(rappel_precision, r):
+    if not r<= len(rappel_precision):
+        r=len(rappel_precision)
+    val=0
+    for i in range(r):
+        if rappel_precision[i]=="pertinant":
+            val+=1
+    return round(val/r*100,2)
 def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
     r, p = zip(*rp)
     if rp_process == 'rp':
