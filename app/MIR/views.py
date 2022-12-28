@@ -132,7 +132,7 @@ def image_search2(request, pk):
                                                    'oneDescriptor':False})
     else:
         form = SearchForm()
-    return render(request, 'search.html', {'pk': image.image, 'form': form, 'oneDescriptor':False})
+    return render(request, 'search.html', {'pk': image.image,'class': ImageRequests.ClassChoices(image.classification).name, 'form': form, 'oneDescriptor':False})
 
 @login_required()
 def image_from_db(request):
