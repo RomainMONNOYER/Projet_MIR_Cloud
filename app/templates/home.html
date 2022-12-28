@@ -55,11 +55,13 @@
                         <div class="contact">
                             <div class="row no-gutters">
                                 <div class="contact-item">
-                                    <br>J'ai principalement développé la partie qui touche au cluster : sa mise en place, l'installation de
-                                    paquets et application comme Prometeus ou Grafana.
-                                    Ma curiosité et mon troisième sens pour les technologies
-                                    hardwares m'ont permis de venir à bout de nombreux problèmes
-                                    lors du développement du projet.
+                                    <br>J'ai principalement développé la partie qui touche à la partie cloud.
+                                    Cette partie est composée de la réalisation de cette application web, mais aussi de l'intégration du moteur de recherche
+                                    dans celle-ci. J'ai également travailler sur le déploiement cloud de cette application sur notre machine virtuelle.
+                                    Pour se faire il fallut dans un premier temps réaliser l'implémentation de l'application avec son système d'authentification.
+                                    A celà la gestion d'accès au rendus de images et accès à l'ensemble des descripteurs des images. Enfin le déploiement cloud est réalisé de manière automatisée
+                                    par l'utilisation d'action gitHub déclenchée lors d'une pull request. Ce job va build l'image de notre application, push celle-ci sur dockerHub, et lancer le redéploiement de notre application
+                                    depuis notre VM à l'aide de la combinaison de service docker (application, DB et volume de backup).
                                     <br>
                                     <br>
                                 </div>
@@ -106,16 +108,14 @@
 
 
                             <div class="card text-white bg-secondary mb-3">
-                                <div class="card-header"><H4>Alan Denys</H4></div>
+                                <div class="card-header"><H4>Application</H4></div>
                                 <div class="card-body">
                                     <div class="contact">
                                         <div class="row no-gutters">
                                             <div class="contact-item">
-                                                <br>J'ai principalement développé la partie qui touche au cluster : sa mise en place, l'installation de
-                                                paquets et application comme Prometeus ou Grafana.
-                                                Ma curiosité et mon troisième sens pour les technologies
-                                                hardwares m'ont permis de venir à bout de nombreux problèmes
-                                                lors du développement du projet.
+                                                <br>L'application permet d'uploader une image requête pour laquelle on souhaite réalisée une recherche de similarité
+                                                dans la base de données de départ selon un ou deux descripteurs. A cela s'ajoute des indicateurs de performances
+                                                pour la recherche réalisée. La description détaillée des fonctionnalités est réalisée dans le manuel d'utilisation de cette application.
                                                 <br>
                                                 <br>
                                             </div>
