@@ -36,10 +36,10 @@ def HSV(img):
     return np.concatenate((histH, np.concatenate((histS, histV), axis=None)), axis=None)
 
 
-def SIFT(img):
+def SIFT(img1):
+    img = cv2.resize(img1, (128*2, 64*2))
     sift = cv2.SIFT_create()
     _ , vect_features = sift.detectAndCompute(img,None)
-    print(vect_features)
     return vect_features
 def ORB(img):
     orb = cv2.ORB_create()
@@ -164,10 +164,13 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
     for path, subdir, files in os.walk(os.path.join(settings.MEDIA_ROOT, descriptor_folder)):
         for f in files:
             p = os.path.join(path, f)
-            des = np.loadtxt(p)
-            if des is None:
+            if os.path.getsize(p) == 0:
                 continue
-            dist = distance_f(vec_descriptor, des, distance_choice)
+            des = np.loadtxt(p)
+            try:
+                dist = distance_f(vec_descriptor, des, distance_choice)
+            except:
+                continue
             name = os.path.splitext(f)[0]
             ldistances.append((name.split('_')[4],
                                os.path.join(settings.MEDIA_URL, settings.MIR_DATABASE, *p.split(os.sep)[4:6],

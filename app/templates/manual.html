@@ -3,5 +3,276 @@
 {% block title %}Manuel d'utilisation{% endblock %}
 
 {% block content %}
-    <h1>Hello from Manuel</h1>
+    <div class="container">
+
+        <div class="row">
+            <div class="offset-3 col-6 offset-3">
+                <div class="alert alert-info" role="alert">
+                    Conseil d'utilisations
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-1 col-10 offset-1">
+                <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="card text-white bg-secondary mb-3" style="height: 250px">
+                                <div class="card-header"><H4>Upload d'image pour la recherche</H4></div>
+                                <div class="card-body">
+                                    <div class="contact">
+                                        <div class="row no-gutters">
+                                            <div class="contact-item">
+                                                <br>Pour réaliser une recherche avec 1(2) seul descripteur(s), allez dans l'onglet intitulé "Recherche 1(2) desc".
+                                                Commencer par uploader l'image requête que vous souhaitez en indiquant un titre éventuel mais surtout sa classification
+                                                (Bien s'assurer que la class est correcte car c'est un des prérequis pour le calcul des indicateurs liés à la recherche).
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card text-white bg-secondary mb-3" style="height: 250px">
+                                <div class="card-header"><H4>Réalisation de la recherche</H4></div>
+                                <div class="card-body">
+                                    <div class="contact">
+                                        <div class="row no-gutters">
+                                            <div class="contact-item">
+                                                <br>Une fois arrivé sur le formulaire de recherche, vous avez libre choix sur le descripteur et la distance utilisés.
+                                                Le choix du top déterminera le nombre d'image proche que le moteur de recherche fournira.
+                                                L'indicateur "Rth" quand à lui est présent pour déterminer la R-précision.
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card text-white bg-secondary mb-3" style="height: 250px">
+                                <div class="card-header"><H4>Output après recherche</H4></div>
+                                <div class="card-body">
+                                    <div class="contact">
+                                        <div class="row no-gutters">
+                                            <div class="contact-item">
+                                                <br>La sortie obtenue après recherche précisera le temps nécessaire pour la recherche, la R-précision, la F-Mesure, le Recall moyen,
+                                                la Précision moyenne, la courbe de rappel précision, la courbe moyenne de rappel précision et enfin le top de recherche image.
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="offset-3 col-6 offset-3">
+                <div class="alert alert-info" role="alert">
+                    Lexique descripteurs & distances
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">BGR</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">HSV</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">SIFT</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">ORB</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">GLCM</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">LBP</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">HOG</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">VGG16</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">VGG16_1</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">MOBILENET</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">XCEPTION</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Euclidean</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Chi Square</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Battacharya</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Flann</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Brute Force</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Intersection</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Correlation</div>
+                    <div class="card-body">
+                        <div class="card-title">title</div>
+                        <div class="card-text">text</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
 {% endblock %}

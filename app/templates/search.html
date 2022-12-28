@@ -2,6 +2,18 @@
 
 {% block title %}Upload{% endblock %}
 
+{% block alert %}
+    {% if Error %}
+        <div class="row">
+        <div class="offset-4 col-4 offset-4">
+            <div class="alert alert-danger" role="alert">
+                You made a mistake in your choices !<br>
+                Try again !
+            </div>
+        </div>
+        </div>
+    {% endif %}
+{% endblock %}
 {% block content %}
 {% if pk %}
 <div class="container">
@@ -9,8 +21,9 @@
             <div class="col-4">
                 <div class="card" style="width: 25rem;">
                     <h5 class="card-title" style="text-align: center">Image Request</h5>
-                    <img class="card-img-top" src="{{ pk.url }}" alt="{{ image }}">
+                    <img class="card-img-top" src="{{ pk.url }}" alt="{{ image }}" style="height: 400px">
                     <div class="card-body">
+                        <h5 class="card-title" style="text-align: center">{{ title }}</h5>
                         <div class="alert alert-info" role="alert" style="text-align: center">
                             {{ class }}
                         </div>
@@ -99,11 +112,10 @@
                 {% for voisin in voisins%}
                     <div class="col-3">
                         <div class="card" style="width: 20rem; max-height: 50rem">
-                            <img class="card-img-top" src="{{ voisin }}" alt="{{ voisin }}">
-                            <div class="card-body">
-                                <h5 class="card-title" style="text-align: center">Top: {{ forloop.counter }}</h5>
-                             </div>
+                            <h5 class="card-title" style="text-align: center">Top: {{ forloop.counter }}</h5>
+                            <img class="card-img-top" src="{{ voisin }}" alt="{{ voisin }}" style="height: 200px">
                         </div>
+                        <br>
                     </div>
                 {% endfor %}
             </div>
