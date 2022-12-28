@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8000
 
 
-#COPY ./app /app
+COPY ./app /app
 WORKDIR /app
 
 COPY ./docker-dev/requirements.txt /tmp
