@@ -43,4 +43,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: docker rm -f project-mir-cloud && docker-compose up --build
+          script: docker-compose up -d --build
