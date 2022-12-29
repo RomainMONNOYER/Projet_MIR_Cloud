@@ -50,6 +50,17 @@ def image_search(request, pk):
         if request.method == 'POST':
             form = SearchForm(request.POST)
             if form.is_valid():
+                if (
+                    form.instance.descriptor1
+                    in (
+                        DescriptorRequests.DescriptorChoices.SIFT,
+                        DescriptorRequests.DescriptorChoices.ORB,
+                    )
+                ) and form.instance.distance not in (
+                    DescriptorRequests.DistanceChoices.FLANN,
+                    DescriptorRequests.DistanceChoices.BRUTE_FORCE,
+                ):
+                    return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Descriptor and distance mismatch'})
                 form.save()
                 if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
                     top = get_top(image.classification)
@@ -90,7 +101,7 @@ def image_search(request, pk):
             form = SearchForm()
             return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True})
     except:
-        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'True'})
+        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Something wrong happened'})
 
 
 @login_required()
@@ -100,6 +111,23 @@ def image_search2(request, pk):
         if request.method == 'POST':
             form = SearchForm(request.POST)
             if form.is_valid():
+                if (
+                        form.instance.descriptor1
+                        in (
+                                DescriptorRequests.DescriptorChoices.SIFT,
+                                DescriptorRequests.DescriptorChoices.ORB,
+                        )
+                        or form.instance.descriptor2
+                        in (
+                                DescriptorRequests.DescriptorChoices.SIFT,
+                                DescriptorRequests.DescriptorChoices.ORB,
+                        )
+                ) and form.instance.distance not in (
+                        DescriptorRequests.DistanceChoices.FLANN,
+                        DescriptorRequests.DistanceChoices.BRUTE_FORCE,
+                ):
+                    return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Descriptor and distance mismatch'})
+
                 if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
                     top = get_top(image.classification)
                 else:
@@ -139,7 +167,7 @@ def image_search2(request, pk):
             form = SearchForm()
             return render(request, 'search.html', {'pk': image.image,'class': ImageRequests.ClassChoices(image.classification).name, 'form': form, 'oneDescriptor':False})
     except:
-        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': True,'oneDescriptor':False, 'Error': True})
+        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': True,'oneDescriptor':False, 'Error': "Something wrong happened"})
 
 
 @login_required()
