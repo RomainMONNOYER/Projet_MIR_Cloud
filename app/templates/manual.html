@@ -114,8 +114,8 @@
                 <div class="card">
                     <div class="card-header">BGR</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur de couleur</h5>
+                        <div class="card-text">Descripteur basé sur l'historgram de couleur Rouge Vert Bleu de l'image</div>
                     </div>
                 </div>
             </div>
@@ -123,8 +123,8 @@
                 <div class="card">
                     <div class="card-header">HSV</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur de couleur</h5>
+                        <div class="card-text">Descripteur basé sur un historgram décomposé en teinte/nuance, saturation et luminosité.</div>
                     </div>
                 </div>
             </div>
@@ -132,8 +132,14 @@
                 <div class="card">
                     <div class="card-header">SIFT</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur de point d'intérêt</h5>
+                        <div class="card-text">
+                            Scale Invariant Feature Transform <br>
+                            Ce descripteur est invariant à la translation, à la mise à l'échelle et à la rotation de l'image.
+                            <br>Il est partiellement invariant aux changements d'éclairage et robuste à la distorsion géométrique locale.
+                            <br>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -145,8 +151,13 @@
                 <div class="card">
                     <div class="card-header">ORB</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur de point d'intérêt</h5>
+                        <div class="card-text">
+                            Oriented FAST and Rotated BRIEF <br>
+                            C'est une combinaison entre le descripteur FAST pour la détection de
+                            point d'intérêt avec BRIEF qui agit comme descripteur binaire en altérant l'image par du bruit gaussien.
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -154,8 +165,13 @@
                 <div class="card">
                     <div class="card-header">GLCM</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur de Texture</h5>
+                        <div class="card-text">
+                            Gray Level Co-occurrence Matrix <br>
+                            Il défini les paires de niveaux de gris dominants dans la texture des images d'entrée? <br>
+                            Pour se faire on va analyser le contrast, la dissimilarité, l'homogénéité, le second moment angulaire (ASM), l'énergie et la corrélation.
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -163,8 +179,12 @@
                 <div class="card">
                     <div class="card-header">LBP</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur de Texture</h5>
+                        <div class="card-text">
+                            Local Binary Patterns <br>
+                            Observation des valeurs d'intensité dans un voisinage circulaire donné dans un sens donné
+                            <br>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -175,8 +195,12 @@
                 <div class="card">
                     <div class="card-header">HOG</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur de forme/contour</h5>
+                        <div class="card-text">
+                            Histogram of Oriented Gradients <br>
+                            la distribution des gradients indique les contours grace à la direction des bords ainsi que l'intensité du gradient.
+                            <br>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -184,8 +208,10 @@
                 <div class="card">
                     <div class="card-header">VGG16</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture VGG16 et les poids d'entrainement Imagenet, ce descripteur est bon pours ............
+                        </div>
                     </div>
                 </div>
             </div>
@@ -193,8 +219,49 @@
                 <div class="card">
                     <div class="card-header">VGG16_1</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture VGG16 et les poids d'entrainement Imagenet mais en utilisant l'avant dernière couche.
+                            Ce descripteur est bon pours ............
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">RESNET50</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture RESNET50 et les poids d'entrainement Imagenet, ce descripteur est bon pour ............
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">RESNET101</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture RESNET101 et les poids d'entrainement Imagenet, ce descripteur est bon pour ............
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">RESNET101_1</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture RESNET101 et les poids d'entrainement Imagenet mais en utilisant l'avant dernière couche.
+                            Ce descripteur est bon pour ............
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,8 +273,10 @@
                 <div class="card">
                     <div class="card-header">MOBILENET</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture MobileNet et les poids d'entrainement Imagenet, ce descripteur est bon pour ............
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,8 +284,10 @@
                 <div class="card">
                     <div class="card-header">XCEPTION</div>
                     <div class="card-body">
-                        <div class="card-title">title</div>
-                        <div class="card-text">text</div>
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture Xception et les poids d'entrainement Imagenet, ce descripteur est bon pour ............
+                        </div>
                     </div>
                 </div>
             </div>
