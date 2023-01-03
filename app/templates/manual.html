@@ -3,5 +3,452 @@
 {% block title %}Manuel d'utilisation{% endblock %}
 
 {% block content %}
-    <h1>Hello from Manuel</h1>
+    <div class="container">
+        <div class="row">
+            <div class="offset-3 col-6 offset-3">
+                <div class="alert alert-info" role="alert">
+                    Conseil d'utilisations
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-1 col-10 offset-1">
+                <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="card text-white bg-secondary mb-3" style="height: 250px">
+                                <div class="card-header"><H4>Upload d'image pour la recherche</H4></div>
+                                <div class="card-body">
+                                    <div class="contact">
+                                        <div class="row no-gutters">
+                                            <div class="contact-item">
+                                                <br>Pour réaliser une recherche avec 1(2) seul descripteur(s), allez dans l'onglet intitulé "Recherche 1(2) desc".
+                                                Commencer par uploader l'image requête que vous souhaitez en indiquant un titre éventuel mais surtout sa classification
+                                                (Bien s'assurer que la class est correcte car c'est un des prérequis pour le calcul des indicateurs liés à la recherche).
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card text-white bg-secondary mb-3" style="height: 250px">
+                                <div class="card-header"><H4>Réalisation de la recherche</H4></div>
+                                <div class="card-body">
+                                    <div class="contact">
+                                        <div class="row no-gutters">
+                                            <div class="contact-item">
+                                                <br>Une fois arrivé sur le formulaire de recherche, vous avez libre choix sur le descripteur et la distance utilisés.
+                                                Le choix du top déterminera le nombre d'image proche que le moteur de recherche fournira.
+                                                L'indicateur "Rth" quand à lui est présent pour déterminer la R-précision.
+                                                <br>
+
+                                                <br>
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card text-white bg-secondary mb-3" style="height: 250px">
+                                <div class="card-header"><H4>Output après recherche</H4></div>
+                                <div class="card-body">
+                                    <div class="contact">
+                                        <div class="row no-gutters">
+                                            <div class="contact-item">
+                                                <br>La sortie obtenue précisera le temps nécessaire pour la recherche, la R-précision, la F-Mesure, le Recall moyen,
+                                                la Précision moyenne, la courbe de rappel précision, la courbe moyenne de rappel précision et enfin le top de recherche image.
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card text-white bg-warning mb-3" style="height: 250px">
+                                <div class="card-header"><H4>Précaussion de recherche</H4></div>
+                                <div class="card-body">
+                                    <div class="contact">
+                                        <div class="row no-gutters">
+                                            <div class="contact-item">
+                                                <br>Lors de la réalisation d'une  recherche avec les descripteurs SIFT et ORB, la distance choisie doit être Flann ou brute force.
+                                                <br>
+                                                Ceci est valable pour une recherche à 1 ou 2 descripteurs.
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="offset-3 col-6 offset-3">
+                <div class="alert alert-info" role="alert">
+                    Lexique descripteurs & distances
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">BGR</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur de couleur</h5>
+                        <div class="card-text">Descripteur basé sur l'historgram de couleur Rouge Vert Bleu de l'image</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">HSV</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur de couleur</h5>
+                        <div class="card-text">Descripteur basé sur un historgram décomposé en teinte/nuance, saturation et luminosité.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">SIFT</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur de point d'intérêt</h5>
+                        <div class="card-text">
+                            Scale Invariant Feature Transform <br>
+                            Ce descripteur est invariant à la translation, à la mise à l'échelle et à la rotation de l'image.
+                            <br>Il est partiellement invariant aux changements d'éclairage et robuste à la distorsion géométrique locale.
+                            <br>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">ORB</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur de point d'intérêt</h5>
+                        <div class="card-text">
+                            Oriented FAST and Rotated BRIEF <br>
+                            C'est une combinaison entre le descripteur FAST pour la détection de
+                            point d'intérêt avec BRIEF qui agit comme descripteur binaire en altérant l'image par du bruit gaussien.
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">GLCM</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur de Texture</h5>
+                        <div class="card-text">
+                            Gray Level Co-occurrence Matrix <br>
+                            Il définit les paires de niveaux de gris dominants dans la texture des images d'entrée? <br>
+                            Pour se faire on va analyser le contrast, la dissimilarité, l'homogénéité, le second moment angulaire (ASM), l'énergie et la corrélation.
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">LBP</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur de Texture</h5>
+                        <div class="card-text">
+                            Local Binary Patterns <br>
+                            Observation des valeurs d'intensité dans un voisinage circulaire donné dans un sens donné. Si la luminance du pixel est supérieur à celle de ces voisins, on attribue la valeur 1 à ces pixels, sinon 0. On répète ce processus en boucle.
+                            Cette méthode permet d'obtenir un vecteur binaire unique pour chaque image. Il est très utile pour la caractérisation des textures car il montre clairement les variations de contrastes de l'image.
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">HOG</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur de forme/contour</h5>
+                        <div class="card-text">
+                            Histogram of Oriented Gradients <br>
+                            la distribution des gradients indique les contours grace à la direction des bords ainsi que l'intensité du gradient. On calcule ensuite l'histogramme des gradients orientés dans chaque zone de l'image en les regroupant selon leur angle de direction.
+                            Il est très utile pour la caractérisation de forme et de textures des images car il calcule de manière précise les contours et les bords.
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">VGG16</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture VGG16 et les poids d'entrainement Imagenet, ce descripteur est un réseau de neurones convolutionnel (CNN) pour extraire les formes et textures des images.
+                            Il est constitué de 16 couches de neurones ce qui permet de capturer les caractéristiques des images sur différentes échelles et de les combiner afin une réprésentation compacte de l'image.
+                            Il est très utile pour la caractérisation d'image car il capture très précisement les variations de contrastes ainsi que les directions des contours et bords.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">VGG16_1</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture VGG16 et les poids d'entrainement Imagenet, ce descripteur est un réseau de neurones convolutionnel (CNN) pour extraire les formes et textures des images.
+                            A la différence du VGG 16 classique, nous sommes venus retirer la dernière couche de son réseau de neurones.
+                            Il est constitué de 15 couches de neurones ce qui permet de capturer les caractéristiques des images sur différentes échelles et de les combiner afin une réprésentation compacte de l'image.
+                            Il est très utile pour la caractérisation d'image car il capture très précisement les variations de contrastes ainsi que les directions des contours et bords.
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">RESNET50</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture RESNET50 et les poids d'entrainement Imagenet, ce descripteur est un réseau de neurones convolutionnel (CNN) pour extraire les formes et textures des images.
+                            Il est constitué de 50 couches de neurones ce qui permet de capturer les caractéristiques des images.
+                            Il excelle dans la reconnaissance d'objets et reconnaissances d'image de qualité inférieure ou altérées, c'est un bon choix quand les images sont de mauvaises qualités.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">RESNET101</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture RESNET101 et les poids d'entrainement Imagenet mais en utilisant l'avant dernière couche.
+                            Il est constitué de 101 couches de neurones convolutionnel et fully-connected ce qui permet de capturer les caractéristiques des images.
+                            Les couches conventionnels se chargent de récupérer les caractéristiques locales de l'image tandis que les FC se chargent de combiner le tout afin d'obtenir les caractéristiques globales de l'image.
+                            Tout comme son frère "Resnet50", il est très puissant pour travailler sur des images de piètres qualités.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">RESNET101_1</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture RESNET101 et les poids d'entrainement Imagenet mais en utilisant l'avant dernière couche.
+                            A la différence du Resnet101 classique, nous sommes venus retirer la dernière couche de son réseau de neurones.
+                            Il est constitué de 100 couches de neurones convolutionnel et fully-connected ce qui permet de capturer les caractéristiques des images.
+                            Les couches conventionnels se chargent de récupérer les caractéristiques locales de l'image tandis que les FC se chargent de combiner le tout afin d'obtenir les caractéristiques globales de l'image.
+                            Tout comme son frère "Resnet50", il est très puissant pour travailler sur des images de piètres qualités.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">MOBILENET</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture MobileNet et les poids d'entrainement Imagenet.
+                            Il a été conçu pour être léger et effice en termes de ressources informatiques.
+                            En fonction de la version de MobileNet utilisé il peut être conçu de 23 ou 39 couches.
+                            Il est bon pour améliorer la précision de reconnaissance de formes et d'images.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">XCEPTION</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Descripteur deeplearning</h5>
+                        <div class="card-text">
+                            Basé sur l'architecture Xception et les poids d'entrainement Imagenet.
+                            Il a été conçu pour être robuste et sa capacité à gérer des images de qualités inférieures ou altérés ce qui le rend assez populaire comme choix.
+                            Tout comme le MobileNet, il a été conçu pour être combiné avec d'autres descripteurs afin d'améliorer sa précision
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Euclidean</div>
+                    <div class="card-body">
+                        <div class="card-title">Distance</div>
+                        <div class="card-text">Distance défini comme la racine carrée de la somme des carrés des différences entre les coordonnées des deux points, autrement dit:
+                            distance(A, B) = sqrt((A1 - B1)^2 + (A2 - B2)^2 + ... + (An - Bn)^2)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Chi Square</div>
+                    <div class="card-body">
+                        <div class="card-title">Distance</div>
+                        <div class="card-text">Aussi appelée Kullback-Leibler ou Chi-carré,
+                            Distance défini comme la somme des différences entre les probabilités observées et attendues, pondérées par les probabilités attendues et normalisées par le nombre d'évenements.
+                            Autrement dit :
+                            distance(A, B) = sum((Ai - Bi)^2 / Bi)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Battacharya</div>
+                    <div class="card-body">
+                        <div class="card-title">Distance</div>
+                        <div class="card-text">Distance défini par la racine carrée de la demi-somme des différences au carré entre les probabilités observées et attendues. Autrement dit :
+                            distance(A, B) = sqrt(sum((Ai - Bi)^2 / 2))
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Flann</div>
+                    <div class="card-body">
+                        <div class="card-title">Explication</div>
+                        <div class="card-text">Cette méthode ne calcule pas à proprement parler la distance comme le fait la distance euclidienne par exemple.
+                            Cette méthode vient trouver les voisins les plus proches dans un jeu de données via différents algorithmes d'approximation.
+                            Il est principalement utilisé dans les domaines de la vision notamment de l'analyse d'image.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Brute Force</div>
+                    <div class="card-body">
+                        <div class="card-title">Méthode</div>
+                        <div class="card-text">Méthode défini par le calcul de la distance entre chaque élément de l'ensemble de données et tous les autres élements de l'ensemble de données.
+                            Cette méthode est donc assez coûteuse en énergie.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Intersection</div>
+                    <div class="card-body">
+                        <div class="card-title">Distance</div>
+                        <div class="card-text">Distance défini par la somme des produits des probabilités observées et attendues pour chaque évenement. Autrement dit :
+                            distance(A, B) = sum(Ai * Bi)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Correlation</div>
+                    <div class="card-body">
+                        <div class="card-title">Distance</div>
+                        <div class="card-text">Mesure de relation linéaire, il existe différentes méthodes pour le définir mais la plus courante est via le coefficient de Pearson.
+                            Cela mesure la relation linéaire entre deux variables. Autrement dit :
+                            r = sum((Xi - mean(X)) * (Yi - mean(Y))) / sqrt(sum((Xi - mean(X))^2) * sum((Yi - mean(Y))^2))</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">R-précision</div>
+                    <div class="card-body">
+                        <div class="card-title">Explication</div>
+                        <div class="card-text">R-précision est une mesure de performance pour évaluer la qualité des résultats d'une requête.
+                            Pour la calculer, on définit n étant le nombres de résultats attendus. On calcule le nombres de résultats pertinents dans les n premiers résultats et on le divise par n.
+                            Autrement dit :
+                            Rprecision = nb_pertinents / n</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">F-Mesure</div>
+                    <div class="card-body">
+                        <div class="card-title">Explication</div>
+                        <div class="card-text">Mesure permettant de combiner la précision et le rappel en une seule mesure. Elle peut être défini de la manière suivante:
+                            Fmesure = 2 * (précision * rappel) / (précision + rappel)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">Rappel moyen</div>
+                    <div class="card-body">
+                        <div class="card-title">Explication</div>
+                        <div class="card-text">Mesure la proportion moyenne des résultats pertinents parmi l'ensemble des résultats pertinents, tout en prenant en compte tous les résultats de la requête.
+                            Il peut être défini de la manière suivante :
+                            recall_moyen = sum(rappel) / nb_images</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="offset-3 col-6 offset-3">
+                <div class="card">
+                    <div class="card-header">Précision moyenne</div>
+                    <div class="card-body">
+                        <div class="card-title">Explication</div>
+                        <div class="card-text">Mesure la proportion moyenne de résultats pertinents parmi tous les résultats de la requête en prenant en compte tous les résultats de la requête.
+                            Elle peut être calculé de la manière suivante:
+                            precision_moyenne = sum(precision) / nb_images
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+    </div>
+
 {% endblock %}

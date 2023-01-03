@@ -46,93 +46,129 @@ def image_upload_view2(request):
 @login_required()
 def image_search(request, pk):
     image = ImageRequests.objects.filter(id = pk).first()
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            form.save()
-            if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
-                top = get_top(image.classification)
-            else:
-                top=form.instance.top
-            start = time.time()
-            vec, descriptor = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor1)
-            tmp = getkVoisins2_files(vec, top, descriptor, form.instance.distance)
-            end = time.time()
-            voisins = [tmp[i][1] for i in range(len(tmp))]
-            noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
-            graph1,mean_r, mean_p, r_precision, f_mesure = Compute_RP(top,
-                                image.classification,
-                                noms_voisins,
-                                descriptor,
-                                form.instance.distance,r=form.instance.R_precision)
-            graph3,_,_, _,_= Compute_RP(top,
-                                  image.classification,
-                                  noms_voisins,
-                                  descriptor,
-                                  form.instance.distance, r=10,
-                                  rp_process = 'Mrp')
-            return render(request, 'search.html', {'pk': image.image,
-                                                   'class': ImageRequests.ClassChoices(image.classification).name,
-                                                   'form': form,
-                                                   '2_descriptors': False,
-                                                   'voisins':voisins,
-                                                   'time': round(end-start,2),
-                                                   'MeanR':mean_r,
-                                                   'MeanP':mean_p,
-                                                   'Rprecision': r_precision,
-                                                   'Fmesure': f_mesure,
-                                                   'graph': graph1,
-                                                   'graph3':graph3,
-                                                   'oneDescriptor':True})
+    try:
+        if request.method == 'POST':
+            form = SearchForm(request.POST)
+            if form.is_valid():
+                if (
+                    form.instance.descriptor1
+                    in (
+                        DescriptorRequests.DescriptorChoices.SIFT,
+                        DescriptorRequests.DescriptorChoices.ORB,
+                    )
+                ) and form.instance.distance not in (
+                    DescriptorRequests.DistanceChoices.FLANN,
+                    DescriptorRequests.DistanceChoices.BRUTE_FORCE,
+                ):
+                    return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Descriptor and distance mismatch'})
+                form.save()
+                if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
+                    top = get_top(image.classification)
+                else:
+                    top=form.instance.top
+                start = time.time()
+                vec, descriptor = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor1)
+                tmp = getkVoisins2_files(vec, top, descriptor, form.instance.distance)
+                end = time.time()
+                voisins = [tmp[i][1] for i in range(len(tmp))]
+                noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
+                graph1,mean_r, mean_p, r_precision, f_mesure = Compute_RP(top,
+                                                                          image.classification,
+                                                                          noms_voisins,
+                                                                          descriptor,
+                                                                          form.instance.distance,r=form.instance.R_precision)
+                graph3,_,_, _,_= Compute_RP(top,
+                                            image.classification,
+                                            noms_voisins,
+                                            descriptor,
+                                            form.instance.distance, r=10,
+                                            rp_process = 'Mrp')
+                return render(request, 'search.html', {'pk': image.image,
+                                                       'class': ImageRequests.ClassChoices(image.classification).name,
+                                                       'form': form,
+                                                       '2_descriptors': False,
+                                                       'voisins':voisins,
+                                                       'time': round(end-start,2),
+                                                       'MeanR':mean_r,
+                                                       'MeanP':mean_p,
+                                                       'Rprecision': r_precision,
+                                                       'Fmesure': f_mesure,
+                                                       'graph': graph1,
+                                                       'graph3':graph3,
+                                                       'oneDescriptor':True})
 
-    else:
-        form = SearchForm()
-    return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True})
+        else:
+            form = SearchForm()
+            return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True})
+    except:
+        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Something wrong happened'})
+
 
 @login_required()
 def image_search2(request, pk):
     image = ImageRequests.objects.filter(id = pk).first()
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
-                top = get_top(image.classification)
-            else:
-                top=form.instance.top
-            vec1, descriptor1 = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor1)
-            vec2, descriptor2 = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor2)
-            start = time.time()
-            tmp = getkVoisins2_files222222(np.concatenate([vec1, vec2]), top, descriptor1, descriptor2, form.instance.distance)
-            end = time.time()
-            voisins = [tmp[i][1] for i in range(len(tmp))]
-            noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
-            graph1,mean_r, mean_p,r_precision, f_mesure = Compute_RP(top,
-                                               image.classification,
-                                               noms_voisins,
-                                               f"{descriptor1} + {descriptor2}",
-                                               form.instance.distance, r=form.instance.R_precision)
-            graph3,_,_,_,_ = Compute_RP(top,
-                                    image.classification,
-                                    noms_voisins,
-                                    f"{descriptor1} + {descriptor2}",
-                                    form.instance.distance, r=10,
-                                    rp_process = 'Mrp')
-            return render(request, 'search.html', {'pk': image.image,
-                                                   'class': ImageRequests.ClassChoices(image.classification).name,
-                                                   'form': form,
-                                                   '2_descriptors': True,
-                                                   'voisins':voisins,
-                                                   'time': round(end-start,2),
-                                                   'MeanR':mean_r,
-                                                   'MeanP':mean_p,
-                                                   'Rprecision': r_precision,
-                                                   'Fmesure': f_mesure,
-                                                   'graph': graph1,
-                                                   'graph3':graph3,
-                                                   'oneDescriptor':False})
-    else:
-        form = SearchForm()
-    return render(request, 'search.html', {'pk': image.image, 'form': form, 'oneDescriptor':False})
+    try:
+        if request.method == 'POST':
+            form = SearchForm(request.POST)
+            if form.is_valid():
+                if (
+                        form.instance.descriptor1
+                        in (
+                                DescriptorRequests.DescriptorChoices.SIFT,
+                                DescriptorRequests.DescriptorChoices.ORB,
+                        )
+                        or form.instance.descriptor2
+                        in (
+                                DescriptorRequests.DescriptorChoices.SIFT,
+                                DescriptorRequests.DescriptorChoices.ORB,
+                        )
+                ) and form.instance.distance not in (
+                        DescriptorRequests.DistanceChoices.FLANN,
+                        DescriptorRequests.DistanceChoices.BRUTE_FORCE,
+                ):
+                    return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Descriptor and distance mismatch'})
+
+                if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
+                    top = get_top(image.classification)
+                else:
+                    top=form.instance.top
+                vec1, descriptor1 = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor1)
+                vec2, descriptor2 = extractReqFeatures(image.image.url, algo_choice=form.instance.descriptor2)
+                start = time.time()
+                tmp = getkVoisins2_files222222(np.concatenate([vec1, vec2]), top, descriptor1, descriptor2, form.instance.distance)
+                end = time.time()
+                voisins = [tmp[i][1] for i in range(len(tmp))]
+                noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[0]) for voisin in voisins]
+                graph1,mean_r, mean_p,r_precision, f_mesure = Compute_RP(top,
+                                                   image.classification,
+                                                   noms_voisins,
+                                                   f"{descriptor1} + {descriptor2}",
+                                                   form.instance.distance, r=form.instance.R_precision)
+                graph3,_,_,_,_ = Compute_RP(top,
+                                        image.classification,
+                                        noms_voisins,
+                                        f"{descriptor1} + {descriptor2}",
+                                        form.instance.distance, r=10,
+                                        rp_process = 'Mrp')
+                return render(request, 'search.html', {'pk': image.image,
+                                                       'class': ImageRequests.ClassChoices(image.classification).name,
+                                                       'form': form,
+                                                       '2_descriptors': True,
+                                                       'voisins':voisins,
+                                                       'time': round(end-start,2),
+                                                       'MeanR':mean_r,
+                                                       'MeanP':mean_p,
+                                                       'Rprecision': r_precision,
+                                                       'Fmesure': f_mesure,
+                                                       'graph': graph1,
+                                                       'graph3':graph3,
+                                                       'oneDescriptor':False})
+        else:
+            form = SearchForm()
+            return render(request, 'search.html', {'pk': image.image,'class': ImageRequests.ClassChoices(image.classification).name, 'form': form, 'oneDescriptor':False})
+    except:
+        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': True,'oneDescriptor':False, 'Error': "Something wrong happened"})
+
 
 @login_required()
 def image_from_db(request):
