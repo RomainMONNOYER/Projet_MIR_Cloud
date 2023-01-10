@@ -1,25 +1,35 @@
-version: "3.1"
+version: "3"
 
-#volumes:
-#  db-data:
+volumes:
+  db-data:
+
 
 services:
-
   django:
-    build: .
+    image: romainmonnoyer/projet-mir-cloud
     container_name: ${PROJECT_NAME}
-    restart: unless-stopped
+    restart: always
     command: bash -c "
-      python3 manage.py makemigrations
-      && python3 manage.py migrate
+      python3 manage.py migrate
       && python3 manage.py loaddata features/features.json
-      && gunicorn --bind 0.0.0.0:8000 workers 1 Projet_MIR_Cloud.wsgi:application"
-#      && python3 manage.py runserver 0.0.0.0:8000"
-    volumes:
-#      - ./app/:/app
-      - /home/docker/${PROJECT_NAME}/app:/app
+      && python3 manage.py runserver 0.0.0.0:8000"
     ports:
       - "8082:8000"
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    container_name: ${PROJECT_NAME}-mysql
+    working_dir: /application
+    restart: unless-stopped
+    volumes:
+      - db-data:/application
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_USER}
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - "8306:3306"
 networks:
   default:
     name: swag_default
