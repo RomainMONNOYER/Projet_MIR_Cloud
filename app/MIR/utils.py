@@ -232,8 +232,8 @@ def Compute_RP(top,class_image_requete, noms_images_proches, descripteur, distan
             if rappel_precision[j]=="pertinant":
                 val+=1
             j-=1
-
-        rappel = val/top
+        t = get_top(class_image_requete)
+        rappel = val/t
         precision = val/(i+1)
         rp.append((rappel,precision))
     mean_r =round(sum(elt[0] for elt in rp)/len(rp)*100,2)
