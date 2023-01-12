@@ -77,7 +77,7 @@ def image_search(request, pk):
                                                                           noms_voisins,
                                                                           descriptor,
                                                                           form.instance.distance,r=form.instance.R_precision)
-                graph3,_,_, _,_= Compute_RP(top,
+                graph3,mean_average_r,mean_average_p, _,_= Compute_RP(top,
                                             image.classification,
                                             noms_voisins,
                                             descriptor,
@@ -95,6 +95,8 @@ def image_search(request, pk):
                                                        'Fmesure': f_mesure,
                                                        'graph': graph1,
                                                        'graph3':graph3,
+                                                       'mean_average_r':mean_average_r,
+                                                       'mean_average_p': mean_average_p,
                                                        'oneDescriptor':True})
 
         else:
@@ -144,7 +146,7 @@ def image_search2(request, pk):
                                                    noms_voisins,
                                                    f"{descriptor1} + {descriptor2}",
                                                    form.instance.distance, r=form.instance.R_precision)
-                graph3,_,_,_,_ = Compute_RP(top,
+                graph3,mean_average_r,mean_average_p,_,_ = Compute_RP(top,
                                         image.classification,
                                         noms_voisins,
                                         f"{descriptor1} + {descriptor2}",
@@ -162,6 +164,8 @@ def image_search2(request, pk):
                                                        'Fmesure': f_mesure,
                                                        'graph': graph1,
                                                        'graph3':graph3,
+                                                       'mean_average_r':mean_average_r,
+                                                       'mean_average_p': mean_average_p,
                                                        'oneDescriptor':False})
         else:
             form = SearchForm()
