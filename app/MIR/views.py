@@ -83,6 +83,10 @@ def image_search(request, pk):
                                             descriptor,
                                             form.instance.distance, r=10,
                                             rp_process = 'Mrp')
+                if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
+                    top = get_top(image.subclassification)
+                else:
+                    top=form.instance.top
                 sub_noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[1]) for voisin in voisins]
                 sub_graph1,sub_mean_r, sub_mean_p, sub_r_precision, sub_f_mesure = Compute_RP(top,
                                                                           int(image.subclassification%10),
@@ -173,6 +177,10 @@ def image_search2(request, pk):
                                         form.instance.distance, r=10,
                                         rp_process = 'Mrp')
 
+                if form.instance.top == DescriptorRequests.TopChoices.TOP_MAX:
+                    top = get_top(image.subclassification)
+                else:
+                    top=form.instance.top
                 sub_noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[1]) for voisin in voisins]
                 sub_graph1,sub_mean_r, sub_mean_p, sub_r_precision, sub_f_mesure = Compute_RP(top,
                                                                                               int(image.subclassification%10),
