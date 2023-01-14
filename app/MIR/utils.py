@@ -174,8 +174,8 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
             name = os.path.splitext(f)[0]
             ldistances.append((name.split('_')[4],
                                os.path.join(settings.MEDIA_URL, settings.MIR_DATABASE, *p.split(os.sep)[4:6],
-                                            name + '.jpg'), dist))
-    ldistances.sort(key=operator.itemgetter(2))
+                                            name + '.jpg'), round(1/(1+dist)*100, 3)))
+    ldistances.sort(key=operator.itemgetter(2), reverse=True)
     lvoisins = []
     for i in range(top):
         lvoisins.append(ldistances[i])
@@ -251,6 +251,7 @@ def r_precision(rappel_precision, r):
             val+=1
     return round(val/r*100,2)
 def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
+
     r, p = zip(*rp)
     if rp_process == 'rp':
         rappel = r
@@ -258,6 +259,7 @@ def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
     if rp_process == 'Mrp':
         rappel = ((r + np.roll(r,1))/2.0)[1::2]
         precision = ((p + np.roll(p,1))/2.0)[1::2]
+
     fig = plt.figure()
     plt.plot(rappel, precision,'C1', label=descripteur)
     plt.xlabel('Rappel')
@@ -267,6 +269,7 @@ def Display_RP(rp, descripteur, distance, rp_process = 'rp'):
               f"Total recall: {round(rappel[-1]*100,2)}%")
     plt.legend()
     imgdata = StringIO()
+
     fig.savefig(imgdata, format='svg')
     imgdata.seek(0)
     data = imgdata.getvalue()
@@ -291,8 +294,8 @@ def getkVoisins2_files222222(vec_descriptor, top, descriptor_folder1, descriptor
             name = os.path.splitext(f)[0]
             ldistances.append((name.split('_')[4],
                                os.path.join(settings.MEDIA_URL, settings.MIR_DATABASE, *p1.split(os.sep)[4:6],
-                                            name + '.jpg'), dist))
-    ldistances.sort(key=operator.itemgetter(2))
+                                            name + '.jpg'), round(1/(1+dist)*100, 3)))
+    ldistances.sort(key=operator.itemgetter(2), reverse=True)
     lvoisins = []
     for i in range(top):
         lvoisins.append(ldistances[i])
@@ -343,4 +346,73 @@ def get_top(class_choice):
     if class_choice == ImageRequests.ClassChoices.SINGE:
         return TopClassChoices.TOP_MONKEY
 
+
+    if class_choice == ImageRequests.SubClassChoices.BARN_SPIDER:
+        return TopClassChoices.TOP_BARN_SPIDER
+    if class_choice == ImageRequests.SubClassChoices.WOLF_SPIDER:
+        return TopClassChoices.TOP_WOLF_SPIDER
+    if class_choice == ImageRequests.SubClassChoices.TRAP_DOOR_SPIDER:
+        return TopClassChoices.TOP_TRAP_DOOR_SPIDER
+    if class_choice == ImageRequests.SubClassChoices.ORB_WEAVING_SPIDER:
+        return TopClassChoices.TOP_ORB_WEAVING_SPIDER
+    if class_choice == ImageRequests.SubClassChoices.GARDEN_SPIDER:
+        return TopClassChoices.TOP_GARDEN_SPIDER
+    if class_choice == ImageRequests.SubClassChoices.TARENTULA:
+        return TopClassChoices.TOP_TARENTULA
+
+
+    if class_choice == ImageRequests.SubClassChoices.SIBERIAN_HUSKY:
+        return TopClassChoices.TOP_SIBERIAN_HUSKY
+    if class_choice == ImageRequests.SubClassChoices.LABRADOR_RETRIEVER:
+        return TopClassChoices.TOP_LABRADOR_RETRIEVER
+    if class_choice == ImageRequests.SubClassChoices.BOXER:
+        return TopClassChoices.TOP_BOXER
+    if class_choice == ImageRequests.SubClassChoices.CHIHUAHUA:
+        return TopClassChoices.TOP_CHIHUAHUA
+    if class_choice == ImageRequests.SubClassChoices.GOLDEN_RETRIEVER:
+        return TopClassChoices.TOP_GOLDEN_RETRIEVER
+    if class_choice == ImageRequests.SubClassChoices.ROTTWEILER:
+        return TopClassChoices.TOP_ROTTWEILER
+
+
+    if class_choice == ImageRequests.SubClassChoices.VULTURE:
+        return TopClassChoices.TOP_VULTURE
+    if class_choice == ImageRequests.SubClassChoices.PARROT:
+        return TopClassChoices.TOP_PARROT
+    if class_choice == ImageRequests.SubClassChoices.GREAT_GREY_OWL:
+        return TopClassChoices.TOP_GREAT_GREY_OWL
+    if class_choice == ImageRequests.SubClassChoices.BLUE_JAY:
+        return TopClassChoices.TOP_BLUE_JAY
+    if class_choice == ImageRequests.SubClassChoices.ROBIN:
+        return TopClassChoices.TOP_ROBIN
+    if class_choice == ImageRequests.SubClassChoices.BULBUL:
+        return TopClassChoices.TOP_BULBUL
+
+
+    if class_choice == ImageRequests.SubClassChoices.DOG_FISH:
+        return TopClassChoices.TOP_DOG_FISH
+    if class_choice == ImageRequests.SubClassChoices.RAY:
+        return TopClassChoices.TOP_RAY
+    if class_choice == ImageRequests.SubClassChoices.GUITARFISH:
+        return TopClassChoices.TOP_GUITARFISH
+    if class_choice == ImageRequests.SubClassChoices.TIGER_SHARK:
+        return TopClassChoices.TOP_TIGER_SHARK
+    if class_choice == ImageRequests.SubClassChoices.EAGLE_RAY:
+        return TopClassChoices.TOP_EAGLE_RAY
+    if class_choice == ImageRequests.SubClassChoices.HAMMERHEAD:
+        return TopClassChoices.TOP_HAMMERHEAD
+
+
+    if class_choice == ImageRequests.SubClassChoices.BABOON:
+        return TopClassChoices.TOP_BABOON
+    if class_choice == ImageRequests.SubClassChoices.CHIMPANZEE:
+        return TopClassChoices.TOP_CHIMPANZEE
+    if class_choice == ImageRequests.SubClassChoices.GORILLA:
+        return TopClassChoices.TOP_GORILLA
+    if class_choice == ImageRequests.SubClassChoices.MACAQUE:
+        return TopClassChoices.TOP_MACAQUE
+    if class_choice == ImageRequests.SubClassChoices.ORANGUTON:
+        return TopClassChoices.TOP_ORANGUTON
+    if class_choice == ImageRequests.SubClassChoices.SQUIRREL_MONKEY:
+        return TopClassChoices.TOP_SQUIRREL_MONKEY
 

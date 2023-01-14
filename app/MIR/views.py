@@ -77,31 +77,53 @@ def image_search(request, pk):
                                                                           noms_voisins,
                                                                           descriptor,
                                                                           form.instance.distance,r=form.instance.R_precision)
-                graph3,_,_, _,_= Compute_RP(top,
+                graph2,_,_, _,_= Compute_RP(top,
                                             image.classification,
                                             noms_voisins,
                                             descriptor,
                                             form.instance.distance, r=10,
                                             rp_process = 'Mrp')
+                sub_noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[1]) for voisin in voisins]
+                sub_graph1,sub_mean_r, sub_mean_p, sub_r_precision, sub_f_mesure = Compute_RP(top,
+                                                                          int(image.subclassification%10),
+                                                                          sub_noms_voisins,
+                                                                          descriptor,
+                                                                          form.instance.distance,r=form.instance.R_precision)
+                sub_graph2,_,_, _,_= Compute_RP(top,
+                                            int(image.subclassification%10),
+                                            sub_noms_voisins,
+                                            descriptor,
+                                            form.instance.distance, r=10,
+                                            rp_process = 'Mrp')
                 return render(request, 'search.html', {'pk': image.image,
                                                        'class': ImageRequests.ClassChoices(image.classification).name,
+                                                       'subclass': ImageRequests.SubClassChoices(image.subclassification).name,
                                                        'form': form,
                                                        '2_descriptors': False,
-                                                       'voisins':voisins,
+                                                       'voisins':tmp,
                                                        'time': round(end-start,2),
                                                        'MeanR':mean_r,
                                                        'MeanP':mean_p,
                                                        'Rprecision': r_precision,
                                                        'Fmesure': f_mesure,
                                                        'graph': graph1,
-                                                       'graph3':graph3,
+                                                       'graph3':graph2,
+
+                                                       'subMeanR':sub_mean_r,
+                                                       'subMeanP':sub_mean_p,
+                                                       'subRprecision': sub_r_precision,
+                                                       'subFmesure': sub_f_mesure,
+                                                       'subgraph': sub_graph1,
+                                                       'subgraph3':sub_graph2,
                                                        'oneDescriptor':True})
 
         else:
             form = SearchForm()
-            return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True})
+            return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,
+                                                   'subclass': ImageRequests.SubClassChoices(image.subclassification).name,'form': form, '2_descriptors': False,'oneDescriptor':True})
     except:
-        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Something wrong happened'})
+        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,
+                                               'subclass': ImageRequests.SubClassChoices(image.subclassification).name,'form': form, '2_descriptors': False,'oneDescriptor':True, 'Error': 'Something wrong happened'})
 
 
 @login_required()
@@ -150,11 +172,27 @@ def image_search2(request, pk):
                                         f"{descriptor1} + {descriptor2}",
                                         form.instance.distance, r=10,
                                         rp_process = 'Mrp')
+
+                sub_noms_voisins = [int(os.path.splitext(os.path.basename(voisin))[0].split("_")[1]) for voisin in voisins]
+                sub_graph1,sub_mean_r, sub_mean_p, sub_r_precision, sub_f_mesure = Compute_RP(top,
+                                                                                              int(image.subclassification%10),
+                                                                                              sub_noms_voisins,
+                                                                                              f"{descriptor1} + {descriptor2}",
+                                                                                              form.instance.distance,r=form.instance.R_precision)
+                sub_graph2,_,_, _,_= Compute_RP(top,
+                                                int(image.subclassification%10),
+                                                sub_noms_voisins,
+                                                f"{descriptor1} + {descriptor2}",
+                                                form.instance.distance, r=10,
+                                                rp_process = 'Mrp')
+
+
                 return render(request, 'search.html', {'pk': image.image,
                                                        'class': ImageRequests.ClassChoices(image.classification).name,
+                                                       'subclass': ImageRequests.SubClassChoices(image.subclassification).name,
                                                        'form': form,
                                                        '2_descriptors': True,
-                                                       'voisins':voisins,
+                                                       'voisins':tmp,
                                                        'time': round(end-start,2),
                                                        'MeanR':mean_r,
                                                        'MeanP':mean_p,
@@ -162,12 +200,25 @@ def image_search2(request, pk):
                                                        'Fmesure': f_mesure,
                                                        'graph': graph1,
                                                        'graph3':graph3,
+
+                                                       'subMeanR':sub_mean_r,
+                                                       'subMeanP':sub_mean_p,
+                                                       'subRprecision': sub_r_precision,
+                                                       'subFmesure': sub_f_mesure,
+                                                       'subgraph': sub_graph1,
+                                                       'subgraph3':sub_graph2,
+
+
                                                        'oneDescriptor':False})
         else:
             form = SearchForm()
-            return render(request, 'search.html', {'pk': image.image,'class': ImageRequests.ClassChoices(image.classification).name, 'form': form, 'oneDescriptor':False})
-    except:
-        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,'form': form, '2_descriptors': True,'oneDescriptor':False, 'Error': "Something wrong happened"})
+            return render(request, 'search.html', {'pk': image.image,'class': ImageRequests.ClassChoices(image.classification).name,
+                                                   'subclass': ImageRequests.SubClassChoices(image.subclassification).name, 'form': form, 'oneDescriptor':False})
+    except Exception as e:
+        print(e)
+
+        return render(request, 'search.html', {'pk': image.image, 'class': ImageRequests.ClassChoices(image.classification).name,
+                                               'subclass': ImageRequests.SubClassChoices(image.subclassification).name,'form': form, '2_descriptors': True,'oneDescriptor':False, 'Error': "Something wrong happened"})
 
 
 @login_required()
