@@ -10,9 +10,44 @@ class ImageRequests(models.Model):
         OISEAU = 2
         POISSON = 3
         SINGE = 4
-
+    class SubClassChoices(models.IntegerChoices):
+        BARN_SPIDER = 0
+        WOLF_SPIDER = 1
+        TRAP_DOOR_SPIDER = 2
+        ORB_WEAVING_SPIDER = 3
+        GARDEN_SPIDER = 4
+        TARENTULA = 5
+        #####
+        SIBERIAN_HUSKY=10
+        LABRADOR_RETRIEVER=11
+        BOXER = 12
+        CHIHUAHUA = 13
+        GOLDEN_RETRIEVER = 14
+        ROTTWEILER=15
+        #####
+        VULTURE=20
+        PARROT=21
+        GREAT_GREY_OWL=22
+        BLUE_JAY=23
+        ROBIN=24
+        BULBUL=25
+        #######
+        DOG_FISH=30
+        RAY=31
+        GUITARFISH=32
+        TIGER_SHARK=33
+        EAGLE_RAY=34
+        HAMMERHEAD=35
+        ###########
+        BABOON=45
+        CHIMPANZEE=41
+        GORILLA=42
+        MACAQUE=40
+        ORANGUTON=44
+        SQUIRREL_MONKEY=43
     title = models.CharField(max_length=255)
     classification = models.IntegerField(default=ClassChoices.ARAIGNEE, choices=ClassChoices.choices)
+    subclassification = models.IntegerField(default=SubClassChoices.BARN_SPIDER, choices=SubClassChoices.choices)
     is_database_img = models.BooleanField(default=False)
     image = models.ImageField(upload_to='images/requests')
     date_upload = models.DateTimeField(auto_now_add=True)

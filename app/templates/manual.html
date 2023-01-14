@@ -435,7 +435,7 @@
         <br>
         <br>
         <div class="row">
-            <div class="offset-3 col-6 offset-3">
+            <div class="col-6">
                 <div class="card">
                     <div class="card-header">Précision moyenne</div>
                     <div class="card-body">
@@ -443,6 +443,20 @@
                         <div class="card-text">Mesure la proportion moyenne de résultats pertinents parmi tous les résultats de la requête en prenant en compte tous les résultats de la requête.
                             Elle peut être calculé de la manière suivante:
                             precision_moyenne = sum(precision) / nb_images
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">Similarité</div>
+                    <div class="card-body">
+                        <div class="card-title">Explication</div>
+                        <div class="card-text">Le taux de similarité est déterminé de manière générique comme étant 1/(1+distance). Ce taux est une manière
+                            de représenté la différence entre l'image requête et l'image provenant de la DB. L'explication de la différence entre
+                            l'image requête existant dans la DB et celle-ci vient du fait que les fichier d'indexation ont été arrondi contrairement à l'indexation de
+                            l'image requête. Ce taux est également variant selon le descripteur ainsi que la distance consédérée. Il faut donc faire preuve d'esprit critique
+                            en considérant celui-ci.
                         </div>
                     </div>
                 </div>

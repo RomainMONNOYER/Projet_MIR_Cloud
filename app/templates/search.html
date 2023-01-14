@@ -28,6 +28,9 @@
                         <div class="alert alert-info" role="alert" style="text-align: center">
                             {{ class }}
                         </div>
+                        <div class="alert alert-info" role="alert" style="text-align: center">
+                            {{ subclass }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,40 +84,88 @@
     <p style="text-align: center; color: white">
         {% if voisins %}
             <div class="row">
-            <div class="offset-4 col-4 offset-4">
-                <div class="alert alert-light" role="alert"style="text-align: center;">Compute time: {{ time }} seconds
+                <div class="offset-4 col-4 offset-4">
+                    <div class="alert alert-light" role="alert"style="text-align: center;">Compute time: {{ time }} seconds
+                    </div>
                 </div>
-            </div>
-            <div class="row">
+            <div class="card text-white bg-success">
+                <div class="card-header">
+                    <div class="offset-4 col-4 offset-4">
+                        <div class="alert alert-light" role="alert"style="text-align: center;">Animal classification (Main class)
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
 
-                <div class="col-6">
-                    <div class="alert alert-light" role="alert"style="text-align: center;">R-Precision: {{ Rprecision }}%
+                        <div class="col-6">
+                            <div class="alert alert-light" role="alert"style="text-align: center;">R-Precision: {{ Rprecision }}%
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="alert alert-light" role="alert"style="text-align: center;">F-Mesure: {{ Fmesure }}%
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="alert alert-light" role="alert"style="text-align: center;">F-Mesure: {{ Fmesure }}%
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="alert alert-light" role="alert"style="text-align: center;">Mean Recall: {{ MeanR }}%
+                            </div>
+                            <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph|safe}}</p>
+                        </div>
+                        <div class="col-6">
+                            <div class="alert alert-light" role="alert"style="text-align: center;">Mean Precision: {{ MeanP }}%
+                            </div>
+                            <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph3|safe}}</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            </div>
+            <br><br>
             <div class="row">
-                <div class="col-6">
-                    <div class="alert alert-light" role="alert"style="text-align: center;">Mean Recall: {{ MeanR }}%
+                <div class="card text-white bg-success">
+                    <div class="card-header">
+                        <div class="offset-4 col-4 offset-4">
+                            <div class="alert alert-light" role="alert"style="text-align: center;">Breed of animal classification (subclass)
+                            </div>
+                        </div>
                     </div>
-                    <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph|safe}}</p>
-                </div>
-                <div class="col-6">
-                    <div class="alert alert-light" role="alert"style="text-align: center;">Mean Precision: {{ MeanP }}%
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-6">
+                                <div class="alert alert-light" role="alert"style="text-align: center;">R-Precision: {{ subRprecision }}%
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="alert alert-light" role="alert"style="text-align: center;">F-Mesure: {{ subFmesure }}%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="alert alert-light" role="alert"style="text-align: center;">Mean Recall: {{ subMeanR }}%
+                                </div>
+                                <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{subgraph|safe}}</p>
+                            </div>
+                            <div class="col-6">
+                                <div class="alert alert-light" role="alert"style="text-align: center;">Mean Precision: {{ subMeanP }}%
+                                </div>
+                                <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{subgraph3|safe}}</p>
+                            </div>
+                        </div>
                     </div>
-                    <p class ="img-fluid img-thumbnail" style="text-align: center; color: white">{{graph3|safe}}</p>
                 </div>
             </div>
-            </div>
+            <br><br>
             <div class="row">
-                {% for voisin in voisins%}
+                {% for name, path, dist in voisins%}
                     <div class="col-3">
                         <div class="card" style="width: 20rem; max-height: 50rem">
                             <h5 class="card-title" style="text-align: center">Top: {{ forloop.counter }}</h5>
-                            <img class="card-img-top" src="{{ voisin }}" alt="{{ voisin }}" style="height: 200px">
+                            <h6 class="card-title" style="text-align: center">Similarity: {{ dist }}%</h6>
+                            <img class="card-img-top" src="{{ path }}" alt="{{ name }}" style="height: 200px">
                         </div>
                         <br>
                     </div>
