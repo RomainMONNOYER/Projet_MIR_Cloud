@@ -174,7 +174,7 @@ def getkVoisins2_files(vec_descriptor, top, descriptor_folder, distance_choice):
             name = os.path.splitext(f)[0]
             ldistances.append((name.split('_')[4],
                                os.path.join(settings.MEDIA_URL, settings.MIR_DATABASE, *p.split(os.sep)[4:6],
-                                            name + '.jpg'), round(1/(1+dist)*100, 3)))
+                                            name + '.jpg'), 1/(1+dist)*100))
     ldistances.sort(key=operator.itemgetter(2), reverse=True)
     lvoisins = []
     for i in range(top):
@@ -294,7 +294,7 @@ def getkVoisins2_files222222(vec_descriptor, top, descriptor_folder1, descriptor
             name = os.path.splitext(f)[0]
             ldistances.append((name.split('_')[4],
                                os.path.join(settings.MEDIA_URL, settings.MIR_DATABASE, *p1.split(os.sep)[4:6],
-                                            name + '.jpg'), round(1/(1+dist)*100, 3)))
+                                            name + '.jpg'), 1/(1+dist)*100))
     ldistances.sort(key=operator.itemgetter(2), reverse=True)
     lvoisins = []
     for i in range(top):
